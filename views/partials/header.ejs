@@ -10,28 +10,33 @@
         
                 <div class = "ui container">
                     <a href="/" class="item active">
-                        <i class="home icon"></i>Home
+                        <i class="home icon"></i> Home
                     </a>
-                    <a class="item">
-                       <i class="comments icon"></i> Messages
-                    </a>
-                    <a class="item">
-                       <i class="users icon"></i> Friends
-                    </a>
+                    <% if(currentUser){ %>
+                        <a class="item">
+                        <i class="comments icon"></i> Messages
+                        </a>
+                        <a class="item">
+                            <i class="users icon"></i> Friends
+                        </a>
+                    <% } %>
+                    
                     <div class="right menu">
-                        <a class="ui item">
-                            Profile
-                        </a>
-                        <a href="/login" class="ui item">
-                            Login
-                        </a>
-                        <a href="/logout" class="ui item">
-                            Logout
-                        </a>
-                        <a class="ui item" href = "/register">
-                        <i class="user plus icon"></i> Register
-                        </a>
+                        <% if(!currentUser){ %>
+                            <a href="/login" class="ui item">
+                                Login
+                            </a>
+                            <a class="ui item" href = "/register">
+                                <i class="user plus icon"></i> Register
+                            </a>
+                        <% } else{ %>
+                            <a class="ui item">
+                                <%= currentUser.username %>
+                            </a>
+                            <a href="/logout" class="ui item">
+                                Logout
+                            </a>
+                        <% } %>
                     </div>    
                 </div>
-                
             </div>
