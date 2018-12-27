@@ -1,4 +1,4 @@
-# The Team with No Name
+# The Team has No Name
 
 ### Run locally
 
