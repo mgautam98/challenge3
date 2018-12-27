@@ -17,9 +17,9 @@ app.get('/', function(req, res){
   res.render("index");
 });
 
-app.get('/', function(req, res){
-  res.send("Index page");
-});
+app.get("*", function(req, res){
+  res.send("Oops! Something went wrong.")
+})
 
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server is running ");
