@@ -3,9 +3,14 @@ var path = require('path');
 var async = require('async');
 var socketio = require('socket.io');
 var express = require('express');
+var mongoose = require('mongoose');
 
+//setup app
 var app = express();
 app.set("view engine", "ejs");
+
+//database
+mongoose.connect("mongodb://localhost/challenge3");
 
 
 app.get('/', function(req, res){
