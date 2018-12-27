@@ -12,6 +12,7 @@ npm install
 ~~~~
 
 Then install and run mongoDB 
+then run the server
 
 ```
 nodejs app.js
