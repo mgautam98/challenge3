@@ -1,15 +1,20 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var passport = require("passport");
-var bodyParser = require("body-parser");
-var User = require("./models/user");
-var LocalStrategy = require("passport-local");
-var passportLocalMongoose = require("passport-local-mongoose");
+var express                     = require('express'),
+    mongoose                    = require('mongoose'),
+    passport                    = require("passport"),
+    bodyParser                  = require("body-parser"),
+    User                        = require("./models/user"),
+    LocalStrategy               = require("passport-local"),
+    passportLocalMongoose       = require("passport-local-mongoose"),
+    Post                        = require("./models/post");
+    
+    
 
 //database
-mongoose.connect("mongodb://localhost/challenge3");
+mongoose.connect("mongodb://localhost/challenge3", {useNewUrlParser: true});
+
 
 var app = express();
+
 
 //setup app
 app.set("view engine", "ejs");
@@ -28,6 +33,7 @@ app.use(function(req, res, next){
   next();
 });
 
+
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -38,6 +44,36 @@ passport.deserializeUser(User.deserializeUser());
 //routes
 app.get('/', function(req, res){
   res.render("index");
+});
+
+//new post logic
+app.post('/posts', function(req, res){
+  var meta = {
+    votes: 0,
+    favs:  0  
+  };
+  
+  var newPost = {
+    title : req.body.title,
+    body : req.body.body,
+    author : req.user.username,
+    hidden : false,
+    meta : meta,
+    comments: []
+  };
+  
+  Post.create(newPost, function(err, newPost){
+    if(err){
+      console.log(err);
+    }else{
+      res.redirect('/');
+    }
+  });
+});
+
+//this gets the form wich creates new post
+app.get('/posts/new', function(req, res){
+  res.render("new");
 });
 
 app.get('/register', function(req, res){
