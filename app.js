@@ -5,7 +5,8 @@ var express                     = require('express'),
     User                        = require("./models/user"),
     LocalStrategy               = require("passport-local"),
     passportLocalMongoose       = require("passport-local-mongoose"),
-    Post                        = require("./models/post");
+    Post                        = require("./models/post"),
+    path                        = require('path');
     
     
 
@@ -32,7 +33,7 @@ app.use(function(req, res, next){
   res.locals.currentUser = req.user;
   next();
 });
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
