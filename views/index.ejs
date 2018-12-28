@@ -8,10 +8,21 @@
         <% posts.forEach(function(post){ %>
             <div class="event">
                 <div class="label">
-                  <img src="/images/avatar/small/elliot.jpg">
+                  <img src="/images/avatar.jpg">
                 </div>
-                <li> <%= post.title %></li>
-                <li> <%= post.body %></li> 
+                <div class="content">
+                  <div class="summary">
+                    <a class="user">
+                      <%= post.author %>
+                    </a> Posted <%= post.title %>
+                    <div class="date">
+                      1 Hour Ago
+                    </div>
+                    <div class="extra text">
+                        <%= post.body.substring(0, 100) %>
+                    </div>
+                  </div>
+                </div>
             </div>
         <% }); %>
     <div>

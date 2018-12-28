@@ -11,7 +11,7 @@ var express                     = require('express'),
     
 
 //database
-mongoose.connect("mongodb://localhost/challenge3", {useNewUrlParser: true});
+mongoose.connect("mongodb://localhost/challenge3", {useNewUrlParser: true, useCreateIndex: true,});
 
 
 var app = express();
@@ -55,18 +55,17 @@ app.get('/', function(req, res){
 
 //new post logic
 app.post('/posts', function(req, res){
-  var meta = {
-    votes: 0,
-    favs:  0  
+  var title = req.body.title;
+  var body = req.body.body;
+  var author = {
+    id:req.user._id,
+    username:req.user.username
   };
-  
+    
   var newPost = {
-    title : req.body.title,
-    body : req.body.body,
-    author : req.user.username,
-    hidden : false,
-    meta : meta,
-    comments: []
+    title : title,
+    body : body,
+    author : author
   };
   
   Post.create(newPost, function(err, newPost){
@@ -88,7 +87,7 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', function(req, res){
-  User.register(new User({username:req.body.username, name:req.body.name}), req.body.password, function(err, user){
+  User.register(new User({username:req.body.username, email:req.body.email}), req.body.password, function(err, user){
     if(err){
       console.log(err);
       return res.render('/register');
