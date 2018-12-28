@@ -83,6 +83,10 @@ app.post('/posts', function(req, res){
   });
 });
 
+app.get('/posts/:id', function(req, res) {
+    res.render("view");
+});
+
 //this gets the form wich creates new post
 app.get('/posts/new', function(req, res){
   res.render("new");
