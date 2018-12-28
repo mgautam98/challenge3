@@ -84,7 +84,13 @@ app.post('/posts', function(req, res){
 });
 
 app.get('/posts/:id', function(req, res) {
-    res.render("view");
+    Post.findById(req.params.id, function(err, foundPost){
+        if(err){
+            res.redirect("/");
+        } else{
+            res.render("view", {post:foundPost});
+        }
+    });
 });
 
 //this gets the form wich creates new post
