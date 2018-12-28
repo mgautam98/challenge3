@@ -1,10 +1,7 @@
 <% include ./partials/header %>
 
-<div class="ui container">
-    <a href="/posts/new" >Add a new Post</a>
-    <br>
-    
-    <div class="ui feed">
+<div class="ui container" style="padding-top:50px">
+ <div class="ui large feed">
         <% posts.forEach(function(post){ %>
             <div class="event">
                 <div class="label">
@@ -13,7 +10,7 @@
                 <div class="content">
                   <div class="summary">
                     <a class="user">
-                      <%= post.author %>
+                      <%= post.author.username %>
                     </a> Posted <%= post.title %>
                     <div class="date">
                       1 Hour Ago
@@ -21,6 +18,11 @@
                     <div class="extra text">
                         <%= post.body.substring(0, 100) %>
                     </div>
+                  </div>
+                  <div class="meta">
+                    <a class="like">
+                      <i class="like icon"></i> <%=post.meta.votes %> Votes
+                    </a>
                   </div>
                 </div>
             </div>

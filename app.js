@@ -61,11 +61,17 @@ app.post('/posts', function(req, res){
     id:req.user._id,
     username:req.user.username
   };
+  var meta = {
+    votes: 0,
+    favs: 0,
+  };
     
   var newPost = {
     title : title,
     body : body,
-    author : author
+    author : author,
+    meta : meta,
+    hidden : false
   };
   
   Post.create(newPost, function(err, newPost){
