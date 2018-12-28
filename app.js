@@ -94,7 +94,7 @@ app.get('/posts/:id', function(req, res) {
 });
 
 //this gets the form wich creates new post
-app.get('/posts/new', function(req, res){
+app.get('/posts/new', isLoggedIn, function(req, res){
   res.render("new");
 });
 
@@ -103,7 +103,7 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', function(req, res){
-  User.register(new User({username:req.body.username, email:req.body.email}), req.body.password, function(err, user){
+  User.register(new User({username:req.body.username, email:req.body.email, avatar:"/images/avatar.jpg"}), req.body.password, function(err, user){
     if(err){
       console.log(err);
       return res.render('/register');
