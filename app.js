@@ -43,7 +43,13 @@ passport.deserializeUser(User.deserializeUser());
 
 //routes
 app.get('/', function(req, res){
-  res.render("index");
+  Post.find({}, function(err, posts){
+    if(err){
+      console.log(err);
+    }else{
+      res.render("index", {posts:posts});
+    }
+  });
 });
 
 //new post logic

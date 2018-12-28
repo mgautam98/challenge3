@@ -3,7 +3,19 @@
 <div class="ui container">
     <a href="/posts/new" >Add a new Post</a>
     <br>
-<div>
+    
+    <div class="ui feed">
+        <% posts.forEach(function(post){ %>
+            <div class="event">
+                <div class="label">
+                  <img src="/images/avatar/small/elliot.jpg">
+                </div>
+                <li> <%= post.title %></li>
+                <li> <%= post.body %></li> 
+            </div>
+        <% }); %>
+    <div>
+</div>
 
 
 <% include ./partials/footer %>
