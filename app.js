@@ -43,7 +43,12 @@ passport.deserializeUser(User.deserializeUser());
 
 
 //routes
-app.get('/', function(req, res){
+
+app.get('/', function(req, res) {
+   res.redirect('/posts'); 
+});
+
+app.get('/posts', function(req, res){
   Post.find({}, function(err, posts){
     if(err){
       console.log(err);
@@ -84,10 +89,11 @@ app.post('/posts', function(req, res){
 });
 
 //this gets the form which creates new post
-app.get('/posts/new', function(req, res){
+app.get('/posts/new', isLoggedIn, function(req, res){
   res.render("new");
 });
 
+//show the posts
 app.get('/posts/:id', function(req, res) {
     Post.findById(req.params.id, function(err, foundPost){
         if(err){
@@ -98,7 +104,22 @@ app.get('/posts/:id', function(req, res) {
     });
 });
 
+app.get('/users/:id', function(req, res) {
+    User.findById(req.params.id, function(err, foundUser){
+        if(err){
+            res.redirect("/");
+        } else{
+            res.render("user", {user:foundUser});
+        }
+    });
+});
 
+app.get('/users/:id/friends', function(req, res) {
+    res.render("friends");
+});
+
+
+// --------------Handles Authentication--------------
 app.get('/register', function(req, res){
   res.render("register");
 });
@@ -131,20 +152,7 @@ app.get('/logout', function(req, res){
   res.redirect("/");
 });
 
-app.get('/users/:id', function(req, res) {
-    User.findById(req.params.id, function(err, foundUser){
-        if(err){
-            res.redirect("/");
-        } else{
-            res.render("user", {user:foundUser});
-        }
-    });
-});
-
-app.get('/users/:id/friends', function(req, res) {
-    res.render("friends");
-});
-
+// -----------------------------------------------------
 
 
 
