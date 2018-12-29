@@ -130,12 +130,16 @@ app.get('/logout', function(req, res){
   res.redirect("/");
 });
 
+app.get('/users/:id', function(req, res) {
+    res.render("user");
+});
+
+
 
 
 app.get("*", function(req, res){
   res.send("Oops! Something went wrong.");
 });
-
 
 //middleware for checking session
 function isLoggedIn(req, res, next){
