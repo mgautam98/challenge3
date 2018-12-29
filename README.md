@@ -3,7 +3,7 @@
 ### Run locally
 
 Install nodejs form  *https://nodejs.org*  
-
+Clone the repository  
 
 ~~~~
 git clone https://github.com/mgautam98/challenge3.git  
@@ -11,8 +11,8 @@ cd challenge3
 npm install  
 ~~~~
 
-Then install and run mongoDB 
-then run the server
+Then install and run mongoDB   
+Run the server
 
 ```
 nodejs app.js
