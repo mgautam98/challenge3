@@ -83,6 +83,11 @@ app.post('/posts', function(req, res){
   });
 });
 
+//this gets the form which creates new post
+app.get('/posts/new', function(req, res){
+  res.render("new");
+});
+
 app.get('/posts/:id', function(req, res) {
     Post.findById(req.params.id, function(err, foundPost){
         if(err){
@@ -93,10 +98,6 @@ app.get('/posts/:id', function(req, res) {
     });
 });
 
-//this gets the form wich creates new post
-app.get('/posts/new', isLoggedIn, function(req, res){
-  res.render("new");
-});
 
 app.get('/register', function(req, res){
   res.render("register");
@@ -138,6 +139,10 @@ app.get('/users/:id', function(req, res) {
             res.render("user", {user:foundUser});
         }
     });
+});
+
+app.get('/users/:id/friends', function(req, res) {
+    res.render("friends");
 });
 
 
