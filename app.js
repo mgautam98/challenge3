@@ -131,7 +131,13 @@ app.get('/logout', function(req, res){
 });
 
 app.get('/users/:id', function(req, res) {
-    res.render("user");
+    User.findById(req.params.id, function(err, foundUser){
+        if(err){
+            res.redirect("/");
+        } else{
+            res.render("user", {user:foundUser});
+        }
+    });
 });
 
 
