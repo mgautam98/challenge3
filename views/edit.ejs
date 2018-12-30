@@ -1,0 +1,19 @@
+<% include ./partials/header %>
+
+<div class = "ui very padded text container segment">
+    <form action="/posts/<%=post._id %>?_method=PUT" method="POST" class="ui form">
+      <div class="field">
+        <label>Title</label>
+        <input type="text" name="post[title]" value="<%=post.title%>">
+      </div>
+      <div class="field">
+        <label>Body</label>
+        <textarea rows="10" cols="50" name="post[body]" ><%=post.body%></textarea>
+      </div>
+      <button class="fluid ui inverted blue button" type="submit">Edit</button>
+    </form>
+</div>
+
+
+
+<% include ./partials/footer %>

@@ -6,7 +6,8 @@ var express                     = require('express'),
     LocalStrategy               = require("passport-local"),
     passportLocalMongoose       = require("passport-local-mongoose"),
     Post                        = require("./models/post"),
-    path                        = require('path');
+    path                        = require('path'),
+    methodOverride              = require("method-override");
     
     
 
@@ -25,7 +26,7 @@ app.use(require("express-session")({
     resave: false,
     saveUninitialized: false
 }));
-
+app.use(methodOverride("_method"));
 app.use(passport.initialize());
 app.use(passport.session());
 //middleware for passing current user to each route
@@ -42,12 +43,13 @@ passport.deserializeUser(User.deserializeUser());
 
 
 
-//routes
+// ===================ROUTES===============================
 
 app.get('/', function(req, res) {
    res.redirect('/posts'); 
 });
 
+// ==================POSTS===============================
 app.get('/posts', function(req, res){
   Post.find({}, function(err, posts){
     if(err){
@@ -56,6 +58,11 @@ app.get('/posts', function(req, res){
       res.render("posts", {posts:posts});
     }
   });
+});
+
+//this gets the form which creates new post
+app.get('/posts/new', isLoggedIn, function(req, res){
+  res.render("new");
 });
 
 //new post logic
@@ -88,10 +95,6 @@ app.post('/posts', function(req, res){
   });
 });
 
-//this gets the form which creates new post
-app.get('/posts/new', isLoggedIn, function(req, res){
-  res.render("new");
-});
 
 //show the posts
 app.get('/posts/:id', function(req, res) {
@@ -99,11 +102,33 @@ app.get('/posts/:id', function(req, res) {
         if(err){
             res.redirect("/");
         } else{
-            res.render("view", {post:foundPost});
+            res.render("show", {post:foundPost});
         }
     });
 });
 
+app.get('/posts/:id/edit', function(req, res) {
+  Post.findById(req.params.id, function(err, foundPost){
+      if(err){
+          res.redirect("/");
+      } else{
+          res.render("edit", {post:foundPost});
+      }
+  });
+});
+
+app.put('/posts/:id', function(req, res){
+  Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, UpdatedPost){
+    if(err){
+      res.redirect('/');
+    } else {
+      res.redirect('/posts/' + req.params.id);
+    }
+  });
+});
+
+
+// ====================USER==================================
 app.get('/users/:id', function(req, res) {
     User.findById(req.params.id, function(err, foundUser){
         if(err){
@@ -118,8 +143,7 @@ app.get('/users/:id/friends', function(req, res) {
     res.render("friends");
 });
 
-
-// --------------Handles Authentication--------------
+// ====================AUTHENTICATION=============================
 app.get('/register', function(req, res){
   res.render("register");
 });
@@ -152,13 +176,12 @@ app.get('/logout', function(req, res){
   res.redirect("/");
 });
 
-// -----------------------------------------------------
-
-
-
+//---------To handle undefined routes-------------------
 app.get("*", function(req, res){
   res.send("Oops! Something went wrong.");
 });
+// -------------------------------------------------------
+
 
 //middleware for checking session
 function isLoggedIn(req, res, next){

@@ -7,6 +7,7 @@ var UserSchema = new mongoose.Schema({
     email: { type: String, require: true },
     password: String,
     avatar: String,
+    about: String,
     friends: [{
          type: mongoose.Schema.Types.ObjectId,
          ref:"User"
