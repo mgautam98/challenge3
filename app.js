@@ -53,7 +53,7 @@ app.get('/posts', function(req, res){
     if(err){
       console.log(err);
     }else{
-      res.render("index", {posts:posts});
+      res.render("posts", {posts:posts});
     }
   });
 });
