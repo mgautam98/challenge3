@@ -127,6 +127,17 @@ app.put('/posts/:id', function(req, res){
   });
 });
 
+app.delete('/posts/:id', function(req, res){
+  Post.findByIdAndDelete(req.params.id, function(err){
+    if(err){
+      console.log(err);
+      res.redirect("/posts");
+    }else{
+      res.redirect("/posts");
+    }
+  });
+});
+
 
 // ====================USER==================================
 app.get('/users/:id', function(req, res) {

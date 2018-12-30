@@ -22,6 +22,17 @@
                     </a>
                 </div>
             </div>
+            <div class="ui two column grid">
+              <div class="column">
+                <button class="fluid ui inverted yellow button" type="submit">Edit</button>
+              </div>
+              <div class="column">
+                <form action="/posts/<%=post._id %>?_method=DELETE", method="POST" class="delete"> 
+                  <button class="fluid ui inverted red button" type="submit">Delete</button>
+                </form>
+              </div>
+            </div>
+            
             
             <!--comments section-->
             <div class="ui comments">
