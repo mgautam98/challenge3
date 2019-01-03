@@ -140,11 +140,12 @@ app.delete('/posts/:id', function(req, res){
 
 // --------------------Likes----------------------
 app.post('/posts/:id/vote', isLoggedIn, function(req, res) {
+  console.log(req.params.id);
    Post.findById(req.params.id, function(err, foundPost){
      if(err) console.log(err);
      else{
        foundPost.vote();
-       res.redirect("/posts/");
+       res.redirect("/posts/" + req.params.id);
      }
    });
 });

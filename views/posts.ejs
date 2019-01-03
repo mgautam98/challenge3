@@ -20,8 +20,8 @@
                     </div>
                   </div>
                   <div class="meta">
-                    <form style="margin: 0; padding: 0; display:inline;" id="vote_form" action="/posts/<%=post._id %>/vote", method="POST"> 
-                      <a href="javascript:{}" onclick="document.getElementById('vote_form').submit();" class="like"><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>
+                    <form style="margin: 0; padding: 0; display:inline;" id="vote_form_<%=post._id%>" action="/posts/<%=post._id %>/vote", method="POST"> 
+                      <a href="javascript:{}" onclick="document.getElementById('vote_form_<%=post._id%>').submit();" class=""><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>
                       <!--<button class="fluid ui inverted red button" type="submit">vote</button>-->
                     </form>
                   </div>
