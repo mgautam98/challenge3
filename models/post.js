@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 
-var PostSchema = new mongoose.Schema({
+let PostSchema = new mongoose.Schema({
     title: String,
     body: String,
     author: {
@@ -21,8 +21,14 @@ var PostSchema = new mongoose.Schema({
    meta: {
       votes: Number,
       favs:  Number
-    }
+    },
+   created: {type:Date, Default:Date.now}
 });
+
+PostSchema.methods.vote = function(){
+   this.meta.votes++;
+   return this.save();
+};
 
 
 module.exports = mongoose.model("Post", PostSchema);

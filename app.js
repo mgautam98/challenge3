@@ -138,6 +138,16 @@ app.delete('/posts/:id', function(req, res){
   });
 });
 
+// --------------------Likes----------------------
+app.post('/posts/:id/vote', isLoggedIn, function(req, res) {
+   Post.findById(req.params.id, function(err, foundPost){
+     if(err) console.log(err);
+     else{
+       foundPost.vote();
+       res.redirect("/posts/");
+     }
+   });
+});
 
 // ====================USER==================================
 app.get('/users/:id', function(req, res) {

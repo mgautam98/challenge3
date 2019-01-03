@@ -24,7 +24,7 @@
             </div>
             <div class="ui two column grid">
               <div class="column">
-                <button class="fluid ui inverted yellow button" type="submit">Edit</button>
+                <a href="/posts/<%=post._id %>/edit" class="fluid ui inverted yellow button" >Edit</a>
               </div>
               <div class="column">
                 <form action="/posts/<%=post._id %>?_method=DELETE", method="POST" class="delete"> 
