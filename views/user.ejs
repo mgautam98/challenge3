@@ -5,7 +5,7 @@
             <div class="column">
                 <div class="ui card">
                   <div class="image">
-                    <img src="/images/avatar.jpg">
+                    <img src="<%=user.avatar %>">
                   </div>
                   <div class="content">
                     <div class="center">
@@ -14,17 +14,14 @@
                       </form>
                     </div>
                     <a class="header"><%=user.username%></a>
-                    <div class="meta">
-                      <span class="date">Joined in 2013</span>
-                    </div>
                     <div class="description">
                       Just Joined.
                     </div>
                   </div>
                   <div class="extra content">
                     <a>
-                      <i class="user icon"></i>
-                       0 Friends
+                      <i class="users icon"></i>
+                       <%=user.friends.length %> Friends
                     </a>
                   </div>
                 </div>
@@ -34,7 +31,7 @@
                 <div class="ui four huge statistics">
                   <div class="blue statistic">
                     <div class="value">
-                      0
+                      <%=user.posts.length %>
                     </div>
                     <div class="label">
                       <i class="list alternate outline icon"></i> Posts
@@ -50,12 +47,28 @@
                   </div>
                   <div class="blue statistic">
                     <div class="value">
-                      0
+                      <%=user.friends.length %>
                     </div>
                     <div class="label">
-                      <i class="heart icon"></i> Favorites
+                      <i class="users icon"></i> Friends
                     </div>
                   </div>
+                </div>
+                <div class="ui inverted section divider"></div>
+                <h3>Posts by
+                  <% if(currentUser._id==user.id){ %>
+                     You
+                  <% } else { %>
+                    <%= user.username %>
+                  <% } %>
+                </h3>
+                <div class="ui list">
+                  <% user.posts.forEach(function(post){ %>
+                    <div class="item">
+                      <div class="header"><%=post.title %></div>
+                      <a href="/posts/<%=post._id%>"><%= post.body.substring(0, 50) %>....</a>
+                    </div>
+                  <% }) %>
                 </div>
                 
             </div>

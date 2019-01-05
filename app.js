@@ -70,10 +70,6 @@ app.get('/posts/new', isLoggedIn, function(req, res){
 app.post('/posts', function(req, res){
   var title = req.body.title;
   var body = req.body.body;
-  var author = {
-    id:req.user._id,
-    username:req.user.username
-  };
   var meta = {
     votes: 0,
     favs: 0,
@@ -82,16 +78,26 @@ app.post('/posts', function(req, res){
   var newPost = {
     title : title,
     body : body,
-    author : author,
     meta : meta,
     hidden : false
   };
   
-  Post.create(newPost, function(err, newPost){
+  User.findById(req.user._id, function(err, foundUser) {
     if(err){
       console.log(err);
-    }else{
-      res.redirect('/');
+    } else {
+      Post.create(newPost, function(err, newPost) {
+          if(err){
+            console.log(err);
+          } else {
+            newPost.author.id = req.user._id;
+            newPost.author.username = req.user.username;
+            newPost.save();
+            foundUser.posts.push(newPost);
+            foundUser.save();
+            res.redirect('/posts/' + newPost.id);
+          }
+      });
     }
   });
 });
@@ -262,7 +268,7 @@ app.delete('/users/:id/friends/:friend_id', isLoggedIn, function(req, res){
 
 // ====================USER==================================
 app.get('/users/:id', function(req, res) {
-    User.findById(req.params.id, function(err, foundUser){
+    User.findById(req.params.id).populate("posts").exec(function(err, foundUser){
         if(err){
             res.redirect("/");
         } else{
@@ -277,7 +283,7 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', function(req, res){
-  User.register(new User({username:req.body.username, email:req.body.email, avatar:"/images/avatar.jpg"}), req.body.password, function(err, user){
+  User.register(new User({username:req.body.username, email:req.body.email, avatar: req.body.avatar}), req.body.password, function(err, user){
     if(err){
       console.log(err);
       return res.render('/register');

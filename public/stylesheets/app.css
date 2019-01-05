@@ -6,3 +6,5 @@ html {
 #delete{
     display: inline;
 }
+
+a { color: inherit; } 
