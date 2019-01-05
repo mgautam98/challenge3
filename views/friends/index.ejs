@@ -1,0 +1,28 @@
+<% include ../partials/header %>
+
+<div class="ui container">
+    <h3 class="ui block header">
+      Friends
+    </h3>
+    <div class="ui four column grid">
+      <% user.friends.forEach(function(friend){ %>
+        <div class="column">
+          <div class="ui fluid card">
+            <div class="image">
+              <img src="/images/avatar.jpg">
+            </div>
+            <div class="content">
+              <a class="header"><%=friend.username %></a>
+              <form action="/users/<%=user._id %>/friends/<%=friend._id%>?_method=DELETE", method="POST" class="delete"> 
+                <button class="ui tiny red button" type="submit">Delete</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <%}); %>
+    </div>
+    
+</div>
+
+
+<% include ../partials/footer %>
