@@ -26,6 +26,13 @@ UserSchema.methods.vote = function(){
    return this.save();
 };
 
+UserSchema.methods.UpdateInfo = function(email, username, about, avatar){
+    this.email = email;
+    this.username = username;
+    this.about = about;
+    this.avatar = avatar;
+    return this.save();
+};
 
 UserSchema.plugin(passportLocalMongoose);
 

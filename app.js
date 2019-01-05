@@ -289,7 +289,14 @@ app.get('/users/:id/edit', isLoggedIn, function(req, res) {
 
 
 app.put('/users/:id', isLoggedIn, function(req, res){
-  res.send("UPDATED");
+  User.findById(req.params.id, function(err, foundUser) {
+    if(err){
+      console.log(err);
+    }else{
+      foundUser.UpdateInfo(req.body.email, req.body.username, req.body.about, req.body.avatar);
+      res.redirect("/users/" + req.params.id);
+    }
+  });
 });
 
 // ====================AUTHENTICATION=============================

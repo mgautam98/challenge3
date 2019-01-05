@@ -1,18 +1,18 @@
 <% include ../partials/header %>
 
 <div class = "ui very padded text container segment">
-    <form action="/users/<%=user.id%>_method=PUT" method="POST" class="ui form">
+    <form action="/users/<%=user.id%>?_method=PUT" method="POST" class="ui form">
       <div class="field">
         <label>Email</label>
-        <input type="email" name="user[email]" value="<%= user.email %>">
+        <input type="email" name="email" value="<%= user.email %>">
       </div>
       <div class="field">
         <label>Username</label>
-        <input type="text" name="user[username]" value="<%= user.username %>">
+        <input type="text" name="username" value="<%= user.username %>">
       </div>
       <div class="field">
         <label>About</label>
-        <input type="text" name="user[about]" value="<%= user.about %>">
+        <input type="text" name="about" value="<%= user.about %>">
       </div>
       <div>
         <img class="ui tiny avatar image" src="/images/avatar8.jpg">
