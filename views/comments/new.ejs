@@ -1,0 +1,15 @@
+<% include ../partials/header %>
+
+<div class = "ui very padded text container segment">
+    <form action="/posts/<%=post._id%>/comments" method="POST" class="ui form">
+      <div class="field">
+        <label>Text</label>
+        <input type="text" name="comment[text]" placeholder="Comment here....">
+      </div>
+      <button class="fluid ui inverted blue button" type="submit">Comment</button>
+    </form>
+</div>
+
+
+
+<% include ../partials/footer %>

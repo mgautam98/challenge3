@@ -8,6 +8,11 @@
                     <img src="/images/avatar.jpg">
                   </div>
                   <div class="content">
+                    <div class="center">
+                      <form action="/users/<%=user.id %>/friends", method="POST"> 
+                        <button class="ui primary button" type="submit">Add Friend</button>
+                      </form>
+                    </div>
                     <a class="header"><%=user.username%></a>
                     <div class="meta">
                       <span class="date">Joined in 2013</span>
