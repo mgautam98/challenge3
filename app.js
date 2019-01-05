@@ -186,6 +186,15 @@ app.post("/posts/:id/comments", isLoggedIn, function(req, res) {
 });
 
 
+app.delete('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
+  Comment.findByIdAndRemove(req.params.comment_id, function(err, foundCommment){
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect("back");
+    }
+  });
+});
 
 
 
