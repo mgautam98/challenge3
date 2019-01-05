@@ -186,6 +186,26 @@ app.post("/posts/:id/comments", isLoggedIn, function(req, res) {
 });
 
 
+app.get('/posts/:id/comments/:comment_id/edit', isLoggedIn, function(req, res) {
+  Comment.findById(req.params.comment_id, function(err, foundComment) {
+     if(err) {
+       console.log(err);
+     } else {
+       res.render('comments/edit', {post_id : req.params.id, comment:foundComment}); 
+     }
+  });
+});
+
+app.put('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
+  Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, UpdatedComment){
+    if(err){
+      console.log(err);
+    } else {
+      res.redirect("/posts/" + req.params.id);
+    }
+  });
+});
+
 app.delete('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
   Comment.findByIdAndRemove(req.params.comment_id, function(err, foundCommment){
     if(err) {

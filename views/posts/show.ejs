@@ -50,7 +50,7 @@
                       <%= comment.text %>
                     </div>
                     <div class="action">
-                      <a class = "ui tiny yellow button">Edit </a>
+                      <a href="/posts/<%=post._id %>/comments/<%=comment._id%>/edit" class = "ui tiny yellow button">Edit </a>
                       <form action="/posts/<%=post._id %>/comments/<%=comment._id%>?_method=DELETE", method="POST" class="delete"> 
                         <button class="ui tiny red button" type="submit">Delete</button>
                       </form>
