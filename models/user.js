@@ -17,8 +17,14 @@ var UserSchema = new mongoose.Schema({
          type: mongoose.Schema.Types.ObjectId,
          ref: "Post"
         }
-    ]
+    ],
+    votes: Number
 });
+
+UserSchema.methods.vote = function(){
+   this.votes++;
+   return this.save();
+};
 
 
 UserSchema.plugin(passportLocalMongoose);

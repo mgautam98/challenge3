@@ -272,9 +272,24 @@ app.get('/users/:id', function(req, res) {
         if(err){
             res.redirect("/");
         } else{
-            res.render("user", {user:foundUser});
+            res.render("users/index", {user:foundUser});
         }
     });
+});
+
+app.get('/users/:id/edit', isLoggedIn, function(req, res) {
+  User.findById(req.params.id, function(err, foundUser) {
+      if(err){
+        console.log(err);
+      } else {
+        res.render('users/edit', {user:foundUser});
+      }
+  });
+});
+
+
+app.put('/users/:id', isLoggedIn, function(req, res){
+  res.send("UPDATED");
 });
 
 // ====================AUTHENTICATION=============================
@@ -283,7 +298,7 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', function(req, res){
-  User.register(new User({username:req.body.username, email:req.body.email, avatar: req.body.avatar}), req.body.password, function(err, user){
+  User.register(new User({username:req.body.username, email:req.body.email, avatar: req.body.avatar, about:"Just Joined."}), req.body.password, function(err, user){
     if(err){
       console.log(err);
       return res.render('/register');
