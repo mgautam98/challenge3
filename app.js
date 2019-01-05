@@ -207,7 +207,7 @@ app.put('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
 });
 
 app.delete('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
-  Comment.findByIdAndRemove(req.params.comment_id, function(err, foundCommment){
+  Comment.findByIdAndRemove(req.params.comment_id, function(err, foundComment){
     if(err) {
       console.log(err);
     } else {
@@ -217,6 +217,48 @@ app.delete('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
 });
 
 
+// ====================Friends==================================
+
+app.get('/users/:id/friends', isLoggedIn, function(req, res) {
+  User.findById(req.params.id).populate("friends").exec(function(err, foundUser){
+    if(err){
+      res.redirect("/");
+    } else{
+      res.render("friends/index", {user:foundUser});
+    }
+  });
+});
+
+app.post('/users/:id/friends', isLoggedIn, function(req, res) {
+  User.findById(req.params.id, function(err, foundUser1) {
+    if(err){
+      console.log(err);
+    } else {
+      User.findById(req.user._id, function(err, foundUser2) {
+        if(err){
+          console.log(err);
+        } else {
+          foundUser1.friends.push(foundUser2);
+          foundUser2.friends.push(foundUser1);
+          foundUser1.save();
+          foundUser2.save();
+          res.redirect("back");
+        }
+      });
+    }
+  });
+});
+
+//delete a friend
+app.delete('/users/:id/friends/:friend_id', isLoggedIn, function(req, res){
+  User.findByIdAndRemove(req.params.friend_id, function(err, foundFriend){
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect("back");
+    }
+  });
+});
 
 // ====================USER==================================
 app.get('/users/:id', function(req, res) {
@@ -227,14 +269,6 @@ app.get('/users/:id', function(req, res) {
             res.render("user", {user:foundUser});
         }
     });
-});
-
-app.get('/users/:id/friends', function(req, res) {
-    res.render("friends");
-});
-
-app.post('/users/:id/friends', function(req, res) {
-   res.send("Added"); 
 });
 
 // ====================AUTHENTICATION=============================
