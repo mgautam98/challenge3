@@ -7,12 +7,13 @@ var express                     = require('express'),
     passportLocalMongoose       = require("passport-local-mongoose"),
     Post                        = require("./models/post"),
     path                        = require('path'),
-    methodOverride              = require("method-override");
+    methodOverride              = require("method-override"),
+    Comment                     = require("./models/comment");
     
     
 
 //database
-mongoose.connect("mongodb://localhost/challenge3", {useNewUrlParser: true, useCreateIndex: true,});
+mongoose.connect("mongodb://localhost/challenge3");
 
 
 var app = express();
@@ -55,14 +56,14 @@ app.get('/posts', function(req, res){
     if(err){
       console.log(err);
     }else{
-      res.render("posts", {posts:posts});
+      res.render("posts/index", {posts:posts});
     }
   });
 });
 
 //this gets the form which creates new post
 app.get('/posts/new', isLoggedIn, function(req, res){
-  res.render("new");
+  res.render("posts/new");
 });
 
 //new post logic
@@ -98,11 +99,11 @@ app.post('/posts', function(req, res){
 
 //show the posts
 app.get('/posts/:id', function(req, res) {
-    Post.findById(req.params.id, function(err, foundPost){
+    Post.findById(req.params.id).populate("comments").exec(function(err, foundPost){
         if(err){
             res.redirect("/");
         } else{
-            res.render("show", {post:foundPost});
+            res.render("posts/show", {post:foundPost});
         }
     });
 });
@@ -112,7 +113,7 @@ app.get('/posts/:id/edit', function(req, res) {
       if(err){
           res.redirect("/");
       } else{
-          res.render("edit", {post:foundPost});
+          res.render("posts/edit", {post:foundPost});
       }
   });
 });
@@ -140,15 +141,53 @@ app.delete('/posts/:id', function(req, res){
 
 // --------------------Likes----------------------
 app.post('/posts/:id/vote', isLoggedIn, function(req, res) {
-  console.log(req.params.id);
    Post.findById(req.params.id, function(err, foundPost){
      if(err) console.log(err);
      else{
        foundPost.vote();
-       res.redirect("/posts/" + req.params.id);
+       res.redirect("back");
      }
    });
 });
+
+
+// ====================COMMENTS==================================
+
+app.get('/posts/:id/comments/new', isLoggedIn, function(req, res) {
+  Post.findById(req.params.id, function(err, foundPost){
+    if(err){
+      res.redirect("/");
+    } else{
+      res.render("comments/new", {post:foundPost});
+    }
+  });
+});
+
+app.post("/posts/:id/comments", isLoggedIn, function(req, res) {
+    Post.findById(req.params.id, function(err, foundPost) {
+       if(err){
+         console.log(err);
+       } else {
+         Comment.create(req.body.comment, function(err, comment){
+           if(err){
+             console.log(err);
+           } else {
+             comment.author.id = req.user._id;
+             comment.author.username = req.user.username;
+             
+             comment.save();
+             foundPost.comments.push(comment);
+             foundPost.save();
+             res.redirect("/posts/" + foundPost._id);
+           }
+         });
+       }
+    });
+});
+
+
+
+
 
 // ====================USER==================================
 app.get('/users/:id', function(req, res) {
@@ -163,6 +202,10 @@ app.get('/users/:id', function(req, res) {
 
 app.get('/users/:id/friends', function(req, res) {
     res.render("friends");
+});
+
+app.post('/users/:id/friends', function(req, res) {
+   res.send("Added"); 
 });
 
 // ====================AUTHENTICATION=============================
