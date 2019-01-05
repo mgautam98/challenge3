@@ -310,6 +310,14 @@ app.put('/users/:id', isLoggedIn, function(req, res){
   });
 });
 
+// ====================CHAT=============================
+
+app.get('/chat', isLoggedIn, function(req, res) {
+   res.render('chat'); 
+});
+
+
+
 // ====================AUTHENTICATION=============================
 app.get('/register', function(req, res){
   res.render("register");
