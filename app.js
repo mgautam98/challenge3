@@ -150,8 +150,15 @@ app.post('/posts/:id/vote', isLoggedIn, function(req, res) {
    Post.findById(req.params.id, function(err, foundPost){
      if(err) console.log(err);
      else{
-       foundPost.vote();
-       res.redirect("back");
+       User.findById(req.user._id, function(err, foundUser) {
+        if(err){
+          console.log(err);     
+        }else{
+          foundPost.vote();
+          foundUser.vote();
+          res.redirect("back");
+        }
+       });
      }
    });
 });
@@ -293,6 +300,10 @@ app.put('/users/:id', isLoggedIn, function(req, res){
     if(err){
       console.log(err);
     }else{
+      
+      // Changing username will result in loss
+      // of data (previous posts) and various problems
+      
       foundUser.UpdateInfo(req.body.email, req.body.username, req.body.about, req.body.avatar);
       res.redirect("/users/" + req.params.id);
     }

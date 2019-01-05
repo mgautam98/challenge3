@@ -7,6 +7,7 @@ var UserSchema = new mongoose.Schema({
     email: { type: String, require: true },
     password: String,
     avatar: String,
+    votes: Number,
     about: String,
     friends: [{
          type: mongoose.Schema.Types.ObjectId,
@@ -17,8 +18,7 @@ var UserSchema = new mongoose.Schema({
          type: mongoose.Schema.Types.ObjectId,
          ref: "Post"
         }
-    ],
-    votes: Number
+    ]
 });
 
 UserSchema.methods.vote = function(){
