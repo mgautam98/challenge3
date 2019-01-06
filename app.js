@@ -366,6 +366,46 @@ function isLoggedIn(req, res, next){
     res.redirect("/login");
 }
 
+function PostOwnership(req, res, next){
+  if(res.isAuthenticated()){
+    Post.findById(req.params.id, function(err, post) {
+      if(err){
+        console.log(err);
+      }else{
+        if(post.author.id.equals(req.user._id)){
+          next();
+        }else{
+          console.log("You don't own this post");
+          res.redirect("/posts/" + req.params.id);
+        }
+      } 
+    });
+  }else{
+    console.log("You need to be logged in to do that!");
+    res.redirect('/login');
+  }
+}
+
+function CommentOwnership(req, res, next){
+  if(req.isAuthenticated()){
+    Comment.findById(req.params.comment_id, function(err, comment) {
+      if(err){
+        console.log(err);
+      }else{
+        if(comment.author.id.equals(req.user._id)){
+          next();
+        }else{
+          console.log("You don't own this comment");
+          res.redirect("/posts/" + req.params.id);
+        }
+      }
+    });
+  }else{
+    console.log("You need to be logged in to do that!");
+    res.redirect('/login');
+  }
+}
+
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server is running ");
 });
