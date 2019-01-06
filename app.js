@@ -67,7 +67,7 @@ app.get('/posts/new', isLoggedIn, function(req, res){
 });
 
 //new post logic
-app.post('/posts', function(req, res){
+app.post('/posts', isLoggedIn, function(req, res){
   var title = req.body.title;
   var body = req.body.body;
   var meta = {
@@ -114,7 +114,7 @@ app.get('/posts/:id', function(req, res) {
     });
 });
 
-app.get('/posts/:id/edit', function(req, res) {
+app.get('/posts/:id/edit', PostOwnership, function(req, res) {
   Post.findById(req.params.id, function(err, foundPost){
       if(err){
           res.redirect("/");
@@ -134,7 +134,7 @@ app.put('/posts/:id', function(req, res){
   });
 });
 
-app.delete('/posts/:id', function(req, res){
+app.delete('/posts/:id', PostOwnership, function(req, res){
   Post.findByIdAndDelete(req.params.id, function(err){
     if(err){
       console.log(err);
@@ -199,7 +199,7 @@ app.post("/posts/:id/comments", isLoggedIn, function(req, res) {
 });
 
 
-app.get('/posts/:id/comments/:comment_id/edit', isLoggedIn, function(req, res) {
+app.get('/posts/:id/comments/:comment_id/edit', CommentOwnership, function(req, res) {
   Comment.findById(req.params.comment_id, function(err, foundComment) {
      if(err) {
        console.log(err);
@@ -219,7 +219,7 @@ app.put('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
   });
 });
 
-app.delete('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
+app.delete('/posts/:id/comments/:comment_id', CommentOwnership, function(req, res){
   Comment.findByIdAndRemove(req.params.comment_id, function(err, foundComment){
     if(err) {
       console.log(err);
