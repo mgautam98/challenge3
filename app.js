@@ -8,7 +8,8 @@ var express                     = require('express'),
     Post                        = require("./models/post"),
     path                        = require('path'),
     methodOverride              = require("method-override"),
-    Comment                     = require("./models/comment");
+    Comment                     = require("./models/comment"),
+    middleware                  = require("./middleware");
     
     
 
@@ -62,12 +63,12 @@ app.get('/posts', function(req, res){
 });
 
 //this gets the form which creates new post
-app.get('/posts/new', isLoggedIn, function(req, res){
+app.get('/posts/new', middleware.isLoggedIn, function(req, res){
   res.render("posts/new");
 });
 
 //new post logic
-app.post('/posts', isLoggedIn, function(req, res){
+app.post('/posts', middleware.isLoggedIn, function(req, res){
   var title = req.body.title;
   var body = req.body.body;
   var meta = {
@@ -114,7 +115,7 @@ app.get('/posts/:id', function(req, res) {
     });
 });
 
-app.get('/posts/:id/edit', PostOwnership, function(req, res) {
+app.get('/posts/:id/edit', middleware.PostOwnership, function(req, res) {
   Post.findById(req.params.id, function(err, foundPost){
       if(err){
           res.redirect("/");
@@ -134,7 +135,7 @@ app.put('/posts/:id', function(req, res){
   });
 });
 
-app.delete('/posts/:id', PostOwnership, function(req, res){
+app.delete('/posts/:id', middleware.PostOwnership, function(req, res){
   Post.findByIdAndDelete(req.params.id, function(err){
     if(err){
       console.log(err);
@@ -146,7 +147,7 @@ app.delete('/posts/:id', PostOwnership, function(req, res){
 });
 
 // --------------------Likes----------------------
-app.post('/posts/:id/vote', isLoggedIn, function(req, res) {
+app.post('/posts/:id/vote', middleware.isLoggedIn, function(req, res) {
    Post.findById(req.params.id, function(err, foundPost){
      if(err) console.log(err);
      else{
@@ -166,7 +167,7 @@ app.post('/posts/:id/vote', isLoggedIn, function(req, res) {
 
 // ====================COMMENTS==================================
 
-app.get('/posts/:id/comments/new', isLoggedIn, function(req, res) {
+app.get('/posts/:id/comments/new', middleware.isLoggedIn, function(req, res) {
   Post.findById(req.params.id, function(err, foundPost){
     if(err){
       res.redirect("/");
@@ -176,7 +177,7 @@ app.get('/posts/:id/comments/new', isLoggedIn, function(req, res) {
   });
 });
 
-app.post("/posts/:id/comments", isLoggedIn, function(req, res) {
+app.post("/posts/:id/comments", middleware.isLoggedIn, function(req, res) {
     Post.findById(req.params.id, function(err, foundPost) {
        if(err){
          console.log(err);
@@ -199,7 +200,7 @@ app.post("/posts/:id/comments", isLoggedIn, function(req, res) {
 });
 
 
-app.get('/posts/:id/comments/:comment_id/edit', CommentOwnership, function(req, res) {
+app.get('/posts/:id/comments/:comment_id/edit', middleware.CommentOwnership, function(req, res) {
   Comment.findById(req.params.comment_id, function(err, foundComment) {
      if(err) {
        console.log(err);
@@ -209,7 +210,7 @@ app.get('/posts/:id/comments/:comment_id/edit', CommentOwnership, function(req, 
   });
 });
 
-app.put('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
+app.put('/posts/:id/comments/:comment_id', middleware.isLoggedIn, function(req, res){
   Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, UpdatedComment){
     if(err){
       console.log(err);
@@ -219,7 +220,7 @@ app.put('/posts/:id/comments/:comment_id', isLoggedIn, function(req, res){
   });
 });
 
-app.delete('/posts/:id/comments/:comment_id', CommentOwnership, function(req, res){
+app.delete('/posts/:id/comments/:comment_id', middleware.CommentOwnership, function(req, res){
   Comment.findByIdAndRemove(req.params.comment_id, function(err, foundComment){
     if(err) {
       console.log(err);
@@ -232,7 +233,7 @@ app.delete('/posts/:id/comments/:comment_id', CommentOwnership, function(req, re
 
 // ====================Friends==================================
 
-app.get('/users/:id/friends', isLoggedIn, function(req, res) {
+app.get('/users/:id/friends', middleware.isLoggedIn, function(req, res) {
   User.findById(req.params.id).populate("friends").exec(function(err, foundUser){
     if(err){
       res.redirect("/");
@@ -242,7 +243,7 @@ app.get('/users/:id/friends', isLoggedIn, function(req, res) {
   });
 });
 
-app.post('/users/:id/friends', isLoggedIn, function(req, res) {
+app.post('/users/:id/friends', middleware.isLoggedIn, function(req, res) {
   User.findById(req.params.id, function(err, foundUser1) {
     if(err){
       console.log(err);
@@ -263,7 +264,7 @@ app.post('/users/:id/friends', isLoggedIn, function(req, res) {
 });
 
 //delete a friend
-app.delete('/users/:id/friends/:friend_id', isLoggedIn, function(req, res){
+app.delete('/users/:id/friends/:friend_id', middleware.isLoggedIn, function(req, res){
   User.findByIdAndRemove(req.params.friend_id, function(err, foundFriend){
     if(err) {
       console.log(err);
@@ -284,7 +285,7 @@ app.get('/users/:id', function(req, res) {
     });
 });
 
-app.get('/users/:id/edit', isLoggedIn, function(req, res) {
+app.get('/users/:id/edit', middleware.isLoggedIn, function(req, res) {
   User.findById(req.params.id, function(err, foundUser) {
       if(err){
         console.log(err);
@@ -295,7 +296,7 @@ app.get('/users/:id/edit', isLoggedIn, function(req, res) {
 });
 
 
-app.put('/users/:id', isLoggedIn, function(req, res){
+app.put('/users/:id', middleware.isLoggedIn, function(req, res){
   User.findById(req.params.id, function(err, foundUser) {
     if(err){
       console.log(err);
@@ -312,7 +313,7 @@ app.put('/users/:id', isLoggedIn, function(req, res){
 
 // ====================CHAT=============================
 
-app.get('/chat', isLoggedIn, function(req, res) {
+app.get('/chat', middleware.isLoggedIn, function(req, res) {
    res.render('chat'); 
 });
 
@@ -357,54 +358,6 @@ app.get("*", function(req, res){
 });
 // -------------------------------------------------------
 
-
-//middleware for checking session
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
-
-function PostOwnership(req, res, next){
-  if(res.isAuthenticated()){
-    Post.findById(req.params.id, function(err, post) {
-      if(err){
-        console.log(err);
-      }else{
-        if(post.author.id.equals(req.user._id)){
-          next();
-        }else{
-          console.log("You don't own this post");
-          res.redirect("/posts/" + req.params.id);
-        }
-      } 
-    });
-  }else{
-    console.log("You need to be logged in to do that!");
-    res.redirect('/login');
-  }
-}
-
-function CommentOwnership(req, res, next){
-  if(req.isAuthenticated()){
-    Comment.findById(req.params.comment_id, function(err, comment) {
-      if(err){
-        console.log(err);
-      }else{
-        if(comment.author.id.equals(req.user._id)){
-          next();
-        }else{
-          console.log("You don't own this comment");
-          res.redirect("/posts/" + req.params.id);
-        }
-      }
-    });
-  }else{
-    console.log("You need to be logged in to do that!");
-    res.redirect('/login');
-  }
-}
 
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server is running ");
