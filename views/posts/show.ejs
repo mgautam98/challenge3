@@ -9,31 +9,37 @@
                 <%= post.body %>
             </p>
             <div class="item">
-                <img class="ui mini circular image" src="/images/avatar.jpg">
+                <a href="/users/<%=post.author.id._id%>"><img class="ui tiny circular image" src="<%=post.author.id.avatar%>"></a>
                 <div class="content">
-                  <div class="ui sub header"><%= post.author.username %></div>
+                  <div class="ui sub header"><a href="/users/<%=post.author.id._id%>"><%= post.author.username %></a></div>
                   Autor
                 </div>
             </div>
-            <div>
+            <% if(currentUser && !currentUser._id.equals(post.author.id._id)){ %>
+              <div>
                 <div class="meta">
                   <form style="margin: 0; padding: 0; display:inline;" id="vote_form" action="/posts/<%=post._id %>/vote", method="POST"> 
                     <a href="javascript:{}" onclick="document.getElementById('vote_form').submit();" class="like"><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>
                   </form>
                 </div>
-            </div>
-            <br>
-            <div class="ui two column grid">
-              <div class="column">
-                <a href="/posts/<%=post._id %>/edit" class="fluid ui inverted yellow button" >Edit</a>
               </div>
-              <div class="column">
-                <form action="/posts/<%=post._id %>?_method=DELETE", method="POST" class="delete"> 
-                  <button class="fluid ui inverted red button" type="submit">Delete</button>
-                </form>
-              </div>
-            </div>
+            <% }else{ %>
+              <a><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>  
+            <% } %>
             
+            <br>
+            <%if(currentUser && currentUser._id.equals(post.author.id._id)){ %>
+              <div class="ui two column grid">
+                <div class="column">
+                  <a href="/posts/<%=post._id %>/edit" class="fluid ui inverted yellow button" >Edit</a>
+                </div>
+                <div class="column">
+                  <form action="/posts/<%=post._id %>?_method=DELETE", method="POST" class="delete"> 
+                    <button class="fluid ui inverted red button" type="submit">Delete</button>
+                  </form>
+                </div>
+              </div>
+            <% } %>
             
             <!--comments section-->
             <div class="ui comments">

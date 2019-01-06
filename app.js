@@ -52,7 +52,7 @@ app.get('/', function(req, res) {
 
 // ==================POSTS===============================
 app.get('/posts', function(req, res){
-  Post.find({}, function(err, posts){
+  Post.find({}).populate("author.id").exec(function(err, posts){
     if(err){
       console.log(err);
     }else{
@@ -105,7 +105,7 @@ app.post('/posts', function(req, res){
 
 //show the posts
 app.get('/posts/:id', function(req, res) {
-    Post.findById(req.params.id).populate("comments").exec(function(err, foundPost){
+    Post.findById(req.params.id).populate("comments").populate("author.id").exec(function(err, foundPost){
         if(err){
             res.redirect("/");
         } else{
@@ -155,7 +155,7 @@ app.post('/posts/:id/vote', isLoggedIn, function(req, res) {
           console.log(err);     
         }else{
           foundPost.vote();
-          foundUser.vote();
+          // foundUser.vote();
           res.redirect("back");
         }
        });

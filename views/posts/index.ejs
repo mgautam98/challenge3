@@ -5,11 +5,11 @@
         <% posts.forEach(function(post){ %>
             <div class="event">
                 <div class="label">
-                  <img src="/images/avatar.jpg">
+                  <a href="/users/<%= post.author.id._id %>" ><img src="<%=post.author.id.avatar %>"></a>
                 </div>
                 <div class="content">
                   <div class="summary">
-                    <a href="/users/<%= post.author.id %>" class="user">
+                    <a href="/users/<%= post.author.id._id %>" class="user">
                       <%= post.author.username %>
                     </a> Posted on <%= post.title %>
                     <div class="date">
@@ -20,10 +20,14 @@
                     </div>
                   </div>
                   <div class="meta">
-                    <form style="margin: 0; padding: 0; display:inline;" id="vote_form_<%=post._id%>" action="/posts/<%=post._id %>/vote", method="POST"> 
-                      <a href="javascript:{}" onclick="document.getElementById('vote_form_<%=post._id%>').submit();" class=""><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>
-                      <!--<button class="fluid ui inverted red button" type="submit">vote</button>-->
-                    </form>
+                    <% if(currentUser && !currentUser._id.equals(post.author.id._id)){ %>
+                      <form style="margin: 0; padding: 0; display:inline;" id="vote_form_<%=post._id%>" action="/posts/<%=post._id %>/vote", method="POST"> 
+                        <a href="javascript:{}" onclick="document.getElementById('vote_form_<%=post._id%>').submit();" class=""><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>
+                        <!--<button class="fluid ui inverted red button" type="submit">vote</button>-->
+                      </form>
+                    <% }else{ %>
+                      <a><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>  
+                    <% } %>
                   </div>
                 </div>
             </div>
