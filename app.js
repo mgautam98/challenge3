@@ -10,7 +10,7 @@ var express                     = require('express'),
     methodOverride              = require("method-override"),
     Comment                     = require("./models/comment"),
     middleware                  = require("./middleware");
-    
+
     
 
 //database
@@ -352,13 +352,20 @@ app.get('/logout', function(req, res){
   res.redirect("/");
 });
 
+var server    = app.listen(process.env.PORT, process.env.IP, function(){
+                  console.log("Server is running ");
+                }),
+    io        = require('socket.io').listen(server);
+    
+
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
+
 //---------To handle undefined routes-------------------
 app.get("*", function(req, res){
   res.send("Oops! Something went wrong.");
 });
 // -------------------------------------------------------
-
-
-app.listen(process.env.PORT, process.env.IP, function(){
-  console.log("Server is running ");
-});
