@@ -9,6 +9,7 @@ var express                     = require('express'),
     path                        = require('path'),
     methodOverride              = require("method-override"),
     Comment                     = require("./models/comment"),
+    async                       = require('async'),
     middleware                  = require("./middleware");
 
     
@@ -314,7 +315,13 @@ app.put('/users/:id', middleware.isLoggedIn, function(req, res){
 // ====================CHAT=============================
 
 app.get('/chat', middleware.isLoggedIn, function(req, res) {
-   res.render('chat'); 
+  User.findById(req.user._id, function(err, foundUser) {
+    if(err){
+      console.log(err);
+    }else{
+      res.render('chat', {user:foundUser});
+    }    
+  });
 });
 
 
@@ -358,11 +365,75 @@ var server    = app.listen(process.env.PORT, process.env.IP, function(){
     io        = require('socket.io').listen(server);
     
 
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
+var messages = [];
+var sockets = [];
+
+io.on('connection', function (socket) {
+    messages.forEach(function (data) {
+      socket.emit('message', data);
+      console.log(data);
+    });
+
+    sockets.push(socket);
+
+    socket.on('disconnect', function () {
+      sockets.splice(sockets.indexOf(socket), 1);
+      updateRoster();
+    });
+
+    socket.on('message', function (msg) {
+      var text = String(msg || '');
+
+      if (!text)
+        return;
+
+      socket.get('name', function (err, name) {
+        if(err){
+          console.log(err);
+        } else {
+          var data = {
+          name: name,
+          text: text
+          };
+
+          broadcast('message', data);
+          messages.push(data); 
+        }
+      });
+    });
+
+    socket.on('identify', function (name) {
+      socket.set('name', String(name || 'Anonymous'), function (err) {
+        if(err){
+          console.log(err);
+        } else {
+          updateRoster();  
+        }
+      });
+    });
   });
-});
+
+function updateRoster() {
+  async.map(
+    sockets,
+    function (socket, callback) {
+      socket.get('name', callback);
+    },
+    function (err, names) {
+      if(err){
+        console.log(err);
+      }else{
+        broadcast('roster', names);
+      }
+    }
+  );
+}
+
+function broadcast(event, data) {
+  sockets.forEach(function (socket) {
+    socket.emit(event, data);
+  });
+}
 
 //---------To handle undefined routes-------------------
 app.get("*", function(req, res){

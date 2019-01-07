@@ -4,46 +4,45 @@
         <title>challenge3</title>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css">
         <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
-        <script
+        <script>
           src="https://code.jquery.com/jquery-3.3.1.min.js"
           integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
           crossorigin="anonymous"></script>
     </head>
     <body>
-            <div class="ui attached stackable menu", style="margin-bottom:5%">
-        
-                <div class = "ui container">
-                    <a href="/" class="item active">
-                        <i class="pied piper alternate icon"></i> challenge3
+    <div class="ui attached stackable menu", style="margin-bottom:5%">
+        <div class = "ui container">
+            <a href="/" class="item active">
+                <i class="pied piper alternate icon"></i> challenge3
+            </a>
+            <% if(currentUser){ %>
+                <a href="/chat" class="item">
+                <i class="comments icon"></i> Chat
+                </a>
+                <a href="/users/<%=currentUser.id%>/friends" class="item">
+                    <i class="users icon"></i> Friends
+                </a>
+            <% } %>
+            
+            <div class="right menu">
+                <% if(!currentUser){ %>
+                    <a href="/login" class="ui item">
+                        Login
                     </a>
-                    <% if(currentUser){ %>
-                        <a href="/chat" class="item">
-                        <i class="comments icon"></i> Chat
-                        </a>
-                        <a href="/users/<%=currentUser.id%>/friends" class="item">
-                            <i class="users icon"></i> Friends
-                        </a>
-                    <% } %>
-                    
-                    <div class="right menu">
-                        <% if(!currentUser){ %>
-                            <a href="/login" class="ui item">
-                                Login
-                            </a>
-                            <a class="ui item" href = "/register">
-                                <i class="user plus icon"></i> Register
-                            </a>
-                        <% } else{ %>
-                            <a class="ui item" href="/posts/new">
-                                Post
-                            </a>
-                            <a href="/users/<%=currentUser.id %>" class="ui item">
-                                <img class="ui avatar image" src="<%= currentUser.avatar%>"> <%= currentUser.username %>
-                            </a>
-                            <a href="/logout" class="ui item">
-                                Logout
-                            </a>
-                        <% } %>
-                    </div>    
-                </div>
-            </div>
+                    <a class="ui item" href = "/register">
+                        <i class="user plus icon"></i> Register
+                    </a>
+                <% } else{ %>
+                    <a class="ui item" href="/posts/new">
+                        Post
+                    </a>
+                    <a href="/users/<%=currentUser.id %>" class="ui item">
+                        <img class="ui avatar image" src="<%= currentUser.avatar%>"> <%= currentUser.username %>
+                    </a>
+                    <a href="/logout" class="ui item">
+                        Logout
+                    </a>
+                <% } %>
+            </div>    
+        </div>
+    </div>
