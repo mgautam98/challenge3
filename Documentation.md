@@ -4,24 +4,24 @@ Architecture/Design Document
 ```
 ### Table of Contents
 
-1. Technology Stack
-2. Features and functions
-3. Structure
+1. Technology Stack  
+2. Features and functions  
+3. Structure  
 
 ## Technology Stack
-Nodejs 
-Express.js ( Server )
-MongoDB  ( database )
-Semantic-ui ( frontend framework )
+Nodejs   
+Express.js ( Server )  
+MongoDB  ( database )  
+Semantic-ui ( frontend framework )  
 
 ## Features and functions
 ### Register
 Register page takes following information
-1. Username - should be unique
-2. Email ID
-3. Password
-4. Avatar image  
-It stores the hashed password in the database. 
+1. Username - should be unique  
+2. Email ID  
+3. Password  
+4. Avatar image    
+It stores the hashed password in the database.   
 For security we have used passport-local for handle authentication and cookie management.
 
 ### Login
@@ -53,3 +53,9 @@ Has all the details of the user
 Only owner can edit this informations.
 
 ## Structure
+- middlewares - contains middlewares for autharization. isLoggedin( ), PostOwnership( ), CommentOwnership( ).   
+- models - It has models for User, Post, Comment, Vote.  
+- public - It contains the static files i.e. all the css, javascript files.  
+- routes - We divided routes into user routes, posts routes, vote routes, friend routes, and general purpose index routes.  
+- views - All the templates for pages reside here.  
+- app.js - Start script - It assembels all the parts and serve.  
