@@ -7,7 +7,6 @@ var UserSchema = new mongoose.Schema({
     email: { type: String, require: true },
     password: String,
     avatar: String,
-    votes: Number,
     about: String,
     friends: [{
          type: mongoose.Schema.Types.ObjectId,
@@ -18,13 +17,19 @@ var UserSchema = new mongoose.Schema({
          type: mongoose.Schema.Types.ObjectId,
          ref: "Post"
         }
+    ],
+    votes:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Vote"
+        }
     ]
 });
 
-UserSchema.methods.vote = function(){
-   this.votes++;
-   return this.save();
-};
+// UserSchema.methods.vote = function(){
+//   this.votes++;
+//   return this.save();
+// };
 
 UserSchema.methods.UpdateInfo = function(email, username, about, avatar){
     this.email = email;

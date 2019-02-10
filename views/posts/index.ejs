@@ -22,11 +22,11 @@
                   <div class="meta">
                     <% if(currentUser && !currentUser._id.equals(post.author.id._id)){ %>
                       <form style="margin: 0; padding: 0; display:inline;" id="vote_form_<%=post._id%>" action="/posts/<%=post._id %>/vote", method="POST"> 
-                        <a href="javascript:{}" onclick="document.getElementById('vote_form_<%=post._id%>').submit();" class=""><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>
+                        <a href="javascript:{}" onclick="document.getElementById('vote_form_<%=post._id%>').submit();" class=""><i class="chevron circle up icon"></i> <%=post.votes.length %> Votes</a>
                         <!--<button class="fluid ui inverted red button" type="submit">vote</button>-->
                       </form>
                     <% }else{ %>
-                      <a><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>  
+                      <a><i class="chevron circle up icon"></i> <%=post.votes.length %> Votes</a>  
                     <% } %>
                   </div>
                 </div>

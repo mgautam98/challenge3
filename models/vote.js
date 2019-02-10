@@ -1,12 +1,13 @@
 var mongoose = require("mongoose");
 
 var voteSchema = new mongoose.Schema({
-    author: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+    username: String,
+    post: {
+        id:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref: "Post"
         },
-        username: String
+        title: String
     }
 });
 

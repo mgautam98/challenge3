@@ -52,7 +52,7 @@
                   <div class="blue statistic">
                     <div class="value">
                       <% if(user.votes){ %>
-                        <%=user.votes %>
+                        <%=user.votes.length %>
                       <% }else{ %>
                           0
                       <% } %>
@@ -86,6 +86,14 @@
                     </div>
                   <% }) %>
                 </div>
+                
+                <h3>Votes by
+                  <% if(currentUser && currentUser._id==user.id){ %>
+                     You
+                  <% } else { %>
+                    <%= user.username %>
+                  <% } %>
+                </h3>
                 
             </div>
         </div>

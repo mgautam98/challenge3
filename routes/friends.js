@@ -38,7 +38,7 @@ router.post('/users/:id/friends', middleware.isLoggedIn, function(req, res) {
   });
 });
 
-//delete a friend
+//remove a friend
 router.delete('/users/:id/friends/:friend_id', middleware.isLoggedIn, function(req, res){
   User.findByIdAndRemove(req.params.friend_id, function(err, foundFriend){
     if(err) {

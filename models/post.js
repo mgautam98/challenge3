@@ -18,17 +18,19 @@ let PostSchema = new mongoose.Schema({
       }
    ],
    hidden: Boolean,
-   meta: {
-      votes: Number,
-      favs:  Number
-    },
+   votes: [
+      {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Vote"
+      }   
+   ],
    created: {type:Date, Default:Date.now}
 });
 
-PostSchema.methods.vote = function(){
-   this.meta.votes++;
-   return this.save();
-};
+// PostSchema.methods.vote = function(){
+//    this.meta.votes++;
+//    return this.save();
+// };
 
 
 module.exports = mongoose.model("Post", PostSchema);
