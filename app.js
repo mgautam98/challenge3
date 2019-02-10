@@ -17,7 +17,8 @@ var postsRoutes                  = require("./routes/posts"),
     commentsRoutes               = require("./routes/comments"), 
     friendsRoutes                = require("./routes/friends"),
     userRoutes                   = require("./routes/users"),
-    indexRoutes                  = require("./routes/index");
+    indexRoutes                  = require("./routes/index"),
+    chatRoutes                   = require("./routes/chat");
 
 //database
 mongoose.connect("mongodb://localhost/challenge3");
@@ -52,26 +53,16 @@ passport.deserializeUser(User.deserializeUser());
 
 
 // ===================ROUTES===============================
-
 app.use(postsRoutes);
 app.use(likesRoutes);
 app.use(commentsRoutes);
 app.use(friendsRoutes);
 app.use(userRoutes);
-// ====================CHAT=============================
-
-app.get('/chat', middleware.isLoggedIn, function(req, res) {
-  User.findById(req.user._id, function(err, foundUser) {
-    if(err){
-      console.log(err);
-    }else{
-      res.render('chat', {user:foundUser});
-    }    
-  });
-});
-
+app.use(chatRoutes);
 app.use(indexRoutes);
+//=====================ROUTES END==========================
 
+//===================SOCKETIO===========================================
 var server    = app.listen(process.env.PORT, process.env.IP, function(){
                   console.log("Server is running ");
                 }),
@@ -147,6 +138,8 @@ function broadcast(event, data) {
     socket.emit(event, data);
   });
 }
+
+//===================SOCKETIO END========================================
 
 //---------To handle undefined routes-------------------
 app.get("*", function(req, res){
