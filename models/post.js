@@ -5,26 +5,25 @@ let PostSchema = new mongoose.Schema({
     title: String,
     body: String,
     author: {
-      id:{
-         type: mongoose.Schema.Types.ObjectId,
-         ref:"User"
-      },
-      username:String
-   },
-   comments: [
-      {
-         type: mongoose.Schema.Types.ObjectId,
-         ref: "Comment"
-      }
-   ],
-   hidden: Boolean,
-   votes: [
-      {
-      type:mongoose.Schema.Types.ObjectId,
-      ref:"Vote"
-      }   
-   ],
-   created: {type:Date, Default:Date.now}
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
+    }],
+    hidden: Boolean,
+    votes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Vote"
+    }],
+    created: {
+        type: Date,
+        Default: Date.now
+    }
 });
 
 // PostSchema.methods.vote = function(){
