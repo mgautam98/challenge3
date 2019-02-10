@@ -10,6 +10,10 @@ var express                     = require('express'),
     
 
 // ====================AUTHENTICATION=============================
+router.get('/', function(req, res) {
+   res.redirect('/posts'); 
+});
+
 router.get('/register', function(req, res){
   res.render("register");
 });

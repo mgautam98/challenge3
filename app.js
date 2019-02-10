@@ -13,6 +13,7 @@ var express                     = require('express'),
     middleware                  = require("./middleware");
 
 var postsRoutes                  = require("./routes/posts"),
+    likesRoutes                  = require("./routes/likes"),
     commentsRoutes               = require("./routes/comments"), 
     userRoutes                   = require("./routes/users"),
     indexRoutes                  = require("./routes/index");
@@ -51,28 +52,8 @@ passport.deserializeUser(User.deserializeUser());
 
 // ===================ROUTES===============================
 
-app.get('/', function(req, res) {
-   res.redirect('/posts'); 
-});
 app.use(postsRoutes);
-// --------------------Likes----------------------
-app.post('/posts/:id/vote', middleware.isLoggedIn, function(req, res) {
-   Post.findById(req.params.id, function(err, foundPost){
-     if(err) console.log(err);
-     else{
-       User.findById(req.user._id, function(err, foundUser) {
-        if(err){
-          console.log(err);     
-        }else{
-          foundPost.vote();
-          // foundUser.vote();
-          res.redirect("back");
-        }
-       });
-     }
-   });
-});
-
+app.use(likesRoutes);
 app.use(commentsRoutes);
 
 // ====================Friends==================================
