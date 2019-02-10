@@ -21,7 +21,9 @@ var postsRoutes                  = require("./routes/posts"),
     chatRoutes                   = require("./routes/chat");
 
 //database
-mongoose.connect("mongodb://localhost/challenge3");
+
+// mongoose.connect("mongodb://localhost/challenge3");
+mongoose.connect("mongodb://user:challenge3@ds155150.mlab.com:55150/challenge3");
 
 
 var app = express();
