@@ -13,7 +13,7 @@ var express                     = require('express'),
     middleware                  = require("./middleware");
 
 var postsRoutes                  = require("./routes/posts"),
-    likesRoutes                  = require("./routes/likes"),
+    votesRoutes                  = require("./routes/votes"),
     commentsRoutes               = require("./routes/comments"), 
     friendsRoutes                = require("./routes/friends"),
     userRoutes                   = require("./routes/users"),
@@ -54,7 +54,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // ===================ROUTES===============================
 app.use(postsRoutes);
-app.use(likesRoutes);
+app.use(votesRoutes);
 app.use(commentsRoutes);
 app.use(friendsRoutes);
 app.use(userRoutes);
