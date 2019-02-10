@@ -48,7 +48,7 @@
               <% post.comments.forEach(function(comment){ %>
                 <div class="comment">
                   <a class="avatar">
-                    <img src="/images/avatar.jpg">
+                    <img src="<%= comment.author.id.avatar %>">
                   </a>
                   <div class="content">
                     <a class="author"> <%= comment.author.username %></a>

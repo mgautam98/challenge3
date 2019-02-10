@@ -60,7 +60,10 @@ router.post('/posts', middleware.isLoggedIn, function(req, res){
 
 //show the posts
 router.get('/posts/:id', function(req, res) {
-    Post.findById(req.params.id).populate("comments").populate("author.id").exec(function(err, foundPost){
+    Post.findById(req.params.id).populate({
+      path:'comments',
+      populate:{path:'author.id'}
+    }).exec(function(err, foundPost){
         if(err){
             res.redirect("/");
         } else{
@@ -100,9 +103,6 @@ router.delete('/posts/:id', middleware.PostOwnership, function(req, res){
   });
 });
 
-    
-    
-    
     
     
     
