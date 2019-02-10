@@ -1,45 +1,43 @@
 <% include ./partials/header %>
 
-<div class = "ui very padded text container segment">
-    <form action="/register" method="POST" class="ui form">
-      <div class="field">
-        <label>Email</label>
-        <input type="email" name="email" placeholder="yourname@example.com">
-      </div>
-      <div class="field">
-        <label>Username</label>
-        <input type="text" name="username" placeholder="User Name">
-      </div>
-      <div class="field">
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Password">
-      </div>
-      <div>
-        <img class="ui tiny avatar image" src="/images/avatar8.jpg">
-        <img class="ui tiny avatar image" src="/images/avatar2.jpg">
-        <img class="ui tiny avatar image" src="/images/avatar3.jpg">
-        <img class="ui tiny avatar image" src="/images/avatar4.jpg">
-        <img class="ui tiny avatar image" src="/images/avatar5.jpg">
-        <img class="ui tiny avatar image" src="/images/avatar6.jpg">
-        <img class="ui tiny avatar image" src="/images/avatar7.jpg">
-      </div>
-      <br>
-      <div class="field">
-        <label>Choose your avatar</label>
-        <select name="avatar">
-          <option value="/images/avatar8.jpg">1</option>
-          <option value="/images/avatar2.jpg">2</option>
-          <option value="/images/avatar3.jpg">3</option>
-          <option value="/images/avatar4.jpg">4</option>
-          <option value="/images/avatar5.jpg">5</option>
-          <option value="/images/avatar6.jpg">6</option>
-          <option value="/images/avatar7.jpg">7</option>
-        </select>
-      </div>
-      <button class="fluid ui inverted blue button" type="submit">Submit</button>
-    </form>
-</div>
+    <div class="ui very padded text container segment">
+        <form action="/register" method="POST" class="ui form">
+            <div class="field">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="yourname@example.com">
+            </div>
+            <div class="field">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="User Name">
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Password">
+            </div>
+            <div>
+                <img class="ui tiny avatar image" src="/images/avatar8.jpg">
+                <img class="ui tiny avatar image" src="/images/avatar2.jpg">
+                <img class="ui tiny avatar image" src="/images/avatar3.jpg">
+                <img class="ui tiny avatar image" src="/images/avatar4.jpg">
+                <img class="ui tiny avatar image" src="/images/avatar5.jpg">
+                <img class="ui tiny avatar image" src="/images/avatar6.jpg">
+                <img class="ui tiny avatar image" src="/images/avatar7.jpg">
+            </div>
+            <br>
+            <div class="field">
+                <label>Choose your avatar</label>
+                <select name="avatar">
+                    <option value="/images/avatar8.jpg">1</option>
+                    <option value="/images/avatar2.jpg">2</option>
+                    <option value="/images/avatar3.jpg">3</option>
+                    <option value="/images/avatar4.jpg">4</option>
+                    <option value="/images/avatar5.jpg">5</option>
+                    <option value="/images/avatar6.jpg">6</option>
+                    <option value="/images/avatar7.jpg">7</option>
+                </select>
+            </div>
+            <button class="fluid ui inverted blue button" type="submit">Submit</button>
+        </form>
+    </div>
 
-
-
-<% include ./partials/footer %>
+    <% include ./partials/footer %>

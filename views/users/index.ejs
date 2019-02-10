@@ -1,74 +1,76 @@
 <% include ../partials/header %>
-    
+
     <div class="ui container">
         <div class="ui two column grid">
             <div class="column">
                 <div class="ui card">
-                  <div class="image">
-                    <img src="<%=user.avatar %>">
-                  </div>
-                  <div class="content">
-                    <div class="center">
-                      <% if(currentUser && currentUser._id==user.id){ %>
-                        <a href="/users/<%=user.id%>/edit" class="ui primary button">Edit</a>
-                      <% }else if(currentUser){ %>
-                        <% var found = false %>
-                        <% user.friends.forEach(function(friend_id){ %>
-                          <% if(friend_id.equals(currentUser._id)){ %>
-                            <% found = true; %>
-                          <% } %>
-                        <% }) %>
-                        <% if(!found){ %>
-                          <form action="/users/<%=user.id %>/friends", method="POST"> 
-                            <button class="ui primary button" type="submit">Add Friend</button>
-                          </form>
-                        <% } %>
-                      <% } %>
+                    <div class="image">
+                        <img src="<%=user.avatar %>">
                     </div>
-                    <a class="header"><%=user.username%></a>
-                    <div class="description">
-                      <%=user.about%>
+                    <div class="content">
+                        <div class="center">
+                            <% if(currentUser && currentUser._id==user.id){ %>
+                                <a href="/users/<%=user.id%>/edit" class="ui primary button">Edit</a>
+                                <% }else if(currentUser){ %>
+                                    <% var found = false %>
+                                        <% user.friends.forEach(function(friend_id){ %>
+                                            <% if(friend_id.equals(currentUser._id)){ %>
+                                                <% found = true; %>
+                                                    <% } %>
+                                                        <% }) %>
+                                                            <% if(!found){ %>
+                                                                <form action="/users/<%=user.id %>/friends" , method="POST">
+                                                                    <button class="ui primary button" type="submit">Add Friend</button>
+                                                                </form>
+                                                                <% } %>
+                                                                    <% } %>
+                        </div>
+                        <a class="header">
+                            <%=user.username%>
+                        </a>
+                        <div class="description">
+                            <%=user.about%>
+                        </div>
                     </div>
-                  </div>
-                  <div class="extra content">
-                    <a>
-                      <i class="users icon"></i>
-                       <%=user.friends.length %> Friends
-                    </a>
-                  </div>
+                    <div class="extra content">
+                        <a>
+                            <i class="users icon"></i>
+                            <%=user.friends.length %> Friends
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="column">
-                
+
                 <div class="ui four huge statistics">
-                  <div class="blue statistic">
-                    <div class="value">
-                      <%=user.posts.length %>
+                    <div class="blue statistic">
+                        <div class="value">
+                            <%=user.posts.length %>
+                        </div>
+                        <div class="label">
+                            <i class="list alternate outline icon"></i> Posts
+                        </div>
                     </div>
-                    <div class="label">
-                      <i class="list alternate outline icon"></i> Posts
+                    <div class="blue statistic">
+                        <div class="value">
+                            <% if(user.votes){ %>
+                                <%=user.votes.length %>
+                                    <% }else{ %>
+                                        0
+                                        <% } %>
+                        </div>
+                        <div class="label">
+                            <i class="thumbs up icon"></i> Votes
+                        </div>
                     </div>
-                  </div>
-                  <div class="blue statistic">
-                    <div class="value">
-                      <% if(user.votes){ %>
-                        <%=user.votes.length %>
-                      <% }else{ %>
-                          0
-                      <% } %>
+                    <div class="blue statistic">
+                        <div class="value">
+                            <%=user.friends.length %>
+                        </div>
+                        <div class="label">
+                            <i class="users icon"></i> Friends
+                        </div>
                     </div>
-                    <div class="label">
-                      <i class="thumbs up icon"></i> Votes
-                    </div>
-                  </div>
-                  <div class="blue statistic">
-                    <div class="value">
-                      <%=user.friends.length %>
-                    </div>
-                    <div class="label">
-                      <i class="users icon"></i> Friends
-                    </div>
-                  </div>
                 </div>
                 <div class="ui inverted section divider"></div>
                 <h3>Posts by
@@ -79,14 +81,17 @@
                   <% } %>
                 </h3>
                 <div class="ui list">
-                  <% user.posts.forEach(function(post){ %>
-                    <div class="item">
-                      <div class="header"><%=post.title %></div>
-                      <a href="/posts/<%=post._id%>"><%= post.body.substring(0, 50) %>....</a>
-                    </div>
-                  <% }) %>
+                    <% user.posts.forEach(function(post){ %>
+                        <div class="item">
+                            <div class="header">
+                                <%=post.title %>
+                            </div>
+                            <a href="/posts/<%=post._id%>">
+                                <%= post.body.substring(0, 50) %>....</a>
+                        </div>
+                        <% }) %>
                 </div>
-                
+
                 <!--<h3>Votes by-->
                 <!--  <% if(currentUser && currentUser._id==user.id){ %>-->
                 <!--     You-->
@@ -103,13 +108,9 @@
                 <!--    </div>-->
                 <!--  <% }) %>-->
                 <!--</div>-->
-                
+
             </div>
         </div>
     </div>
-    
-        
-        
 
-
-<% include ../partials/footer %>
+    <% include ../partials/footer %>

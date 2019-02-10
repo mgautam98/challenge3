@@ -1,168 +1,162 @@
 <!doctype html>
 <html lang="en" ng-app>
-  <head>
+
+<head>
     <title>challenge3</title>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
     <script>
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous">
+        src = "https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity = "sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin = "anonymous" >
     </script>
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/bootstrap-responsive.min.css">
     <script>
-      function ChatController($scope) {
-        var socket = io.connect();
+        function ChatController($scope) {
+            var socket = io.connect();
 
-        $scope.messages = [];
-        $scope.roster = [];
-        $scope.name = '';
-        $scope.text = '';
+            $scope.messages = [];
+            $scope.roster = [];
+            $scope.name = '';
+            $scope.text = '';
 
-        socket.on('connect', function () {
-          $scope.setName();
-        });
+            socket.on('connect', function() {
+                $scope.setName();
+            });
 
-        socket.on('message', function (msg) {
-          $scope.messages.push(msg);
-          $scope.$apply();
-        });
+            socket.on('message', function(msg) {
+                $scope.messages.push(msg);
+                $scope.$apply();
+            });
 
-        socket.on('roster', function (names) {
-          $scope.roster = names;
-          $scope.$apply();
-        });
+            socket.on('roster', function(names) {
+                $scope.roster = names;
+                $scope.$apply();
+            });
 
-        $scope.send = function send() {
-          console.log('Sending message:', $scope.text);
-          socket.emit('message', $scope.text);
-          $scope.text = '';
-        };
+            $scope.send = function send() {
+                console.log('Sending message:', $scope.text);
+                socket.emit('message', $scope.text);
+                $scope.text = '';
+            };
 
-        $scope.setName = function setName() {
-          socket.emit('identify', $scope.name);
-        };
-      }
+            $scope.setName = function setName() {
+                socket.emit('identify', $scope.name);
+            };
+        }
     </script>
-  </head>
-  <body>
-    <div class="ui attached stackable menu", style="margin-bottom:5%">
-        <div class = "ui container">
+</head>
+
+<body>
+    <div class="ui attached stackable menu" , style="margin-bottom:5%">
+        <div class="ui container">
             <a href="/" class="item active">
                 <i class="pied piper alternate icon"></i> challenge3
             </a>
             <% if(currentUser){ %>
                 <a href="/chat" class="item">
-                <i class="comments icon"></i> Chat
+                    <i class="comments icon"></i> Chat
                 </a>
                 <a href="/users/<%=currentUser.id%>/friends" class="item">
                     <i class="users icon"></i> Friends
                 </a>
-            <% } %>
-            
-            <div class="right menu">
-                <% if(!currentUser){ %>
-                    <a href="/login" class="ui item">
+                <% } %>
+
+                    <div class="right menu">
+                        <% if(!currentUser){ %>
+                            <a href="/login" class="ui item">
                         Login
                     </a>
-                    <a class="ui item" href = "/register">
-                        <i class="user plus icon"></i> Register
-                    </a>
-                <% } else{ %>
-                    <a class="ui item" href="/posts/new">
+                            <a class="ui item" href="/register">
+                                <i class="user plus icon"></i> Register
+                            </a>
+                            <% } else{ %>
+                                <a class="ui item" href="/posts/new">
                         Post
                     </a>
-                    <a href="/users/<%=currentUser.id %>" class="ui item">
+                                <a href="/users/<%=currentUser.id %>" class="ui item">
                         <img class="ui avatar image" src="<%= currentUser.avatar%>"> <%= currentUser.username %>
                     </a>
-                    <a href="/logout" class="ui item">
+                                <a href="/logout" class="ui item">
                         Logout
                     </a>
-                <% } %>
-            </div>    
+                                <% } %>
+                    </div>
         </div>
     </div>
-    
-    
-  <!--====================HEADER=================================-->
-  
-  
-  
-  
-  
+
+    <!--====================HEADER=================================-->
+
     <div class="container" ng-controller="ChatController">
-      <div class="page-header">
-        <h2>Challenge3 Chat</h2>
-      </div>
-      <div class="row">
-        <div class="span3">
-          <ul class="nav nav-list well">
-            <li class="nav-header">Online</li>
-            <li ng-repeat="user in roster" ng-bind="user">
-            </li>
-          </ul>
+        <div class="page-header">
+            <h2>Challenge3 Chat</h2>
         </div>
-        <div class="span9">
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th class="span2">Username</th>
-                <th class="span7">Chat</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="msg in messages">
-                <td class="span2" ng-bind="msg.name"></td>
-                <td class="span7" ng-bind="msg.text"></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="row controls">
-            <form ng-submit="send()">
-              <div class="span2"><input type="text" class="input-block-level" ng-model="name" ng-change="setName()" placeholder="Alias"></div>
-              <div class="input-append span7">
-                <input type="text" class="span6" ng-model="text" placeholder="Message">
-                <input type="submit" class="span1 ui inverted tiny primary button" value="Send" >
-              </div>
-            </form>
-          </div>
+        <div class="row">
+            <div class="span3">
+                <ul class="nav nav-list well">
+                    <li class="nav-header">Online</li>
+                    <li ng-repeat="user in roster" ng-bind="user">
+                    </li>
+                </ul>
+            </div>
+            <div class="span9">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="span2">Username</th>
+                            <th class="span7">Chat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="msg in messages">
+                            <td class="span2" ng-bind="msg.name"></td>
+                            <td class="span7" ng-bind="msg.text"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row controls">
+                    <form ng-submit="send()">
+                        <div class="span2">
+                            <input type="text" class="input-block-level" ng-model="name" ng-change="setName()" placeholder="Alias">
+                        </div>
+                        <div class="input-append span7">
+                            <input type="text" class="span6" ng-model="text" placeholder="Message">
+                            <input type="submit" class="span1 ui inverted tiny primary button" value="Send">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    
-    
-    
+
     <!--==================FOOTER=================================-->
-    <div style="margin-top:5%;">  
-      <div class = "ui vertical footer padded raised segment">
-        <div class = "ui center aligned container">
-          <p>Find Us On</p>
-          <button class="ui github button">
-            <i class="github icon"></i>
-            GitHub
-          </button>
-          <button class="ui google plus button">
-            <i class="google plus icon"></i>
-            Google Plus
-          </button>
-          <button class="ui linkedin button">
-            <i class="linkedin icon"></i>
-            LinkedIn
-          </button> 
-          <button class="ui facebook button">
-            <i class="facebook icon"></i>
-            Facebook
-          </button>
-          <div class="ui inverted section divider"></div>
-          <p class="ui copyright">Copyright &copy; challenge3</p>
+    <div style="margin-top:5%;">
+        <div class="ui vertical footer padded raised segment">
+            <div class="ui center aligned container">
+                <p>Find Us On</p>
+                <button class="ui github button">
+                    <i class="github icon"></i> GitHub
+                </button>
+                <button class="ui google plus button">
+                    <i class="google plus icon"></i> Google Plus
+                </button>
+                <button class="ui linkedin button">
+                    <i class="linkedin icon"></i> LinkedIn
+                </button>
+                <button class="ui facebook button">
+                    <i class="facebook icon"></i> Facebook
+                </button>
+                <div class="ui inverted section divider"></div>
+                <p class="ui copyright">Copyright &copy; challenge3</p>
+            </div>
         </div>
-      </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/angular.min.js"></script>
-  </body>
+</body>
+
 </html>

@@ -11,75 +11,82 @@
             <div class="item">
                 <a href="/users/<%=post.author.id._id%>"><img class="ui tiny circular image" src="<%=post.author.id.avatar%>"></a>
                 <div class="content">
-                  <div class="ui sub header"><a href="/users/<%=post.author.id._id%>"><%= post.author.username %></a></div>
-                  Autor
+                    <div class="ui sub header">
+                        <a href="/users/<%=post.author.id._id%>">
+                            <%= post.author.username %>
+                        </a>
+                    </div>
+                    Autor
                 </div>
             </div>
             <% if(currentUser && !currentUser._id.equals(post.author.id._id)){ %>
-              <div>
-                <div class="meta">
-                  <form style="margin: 0; padding: 0; display:inline;" id="vote_form" action="/posts/<%=post._id %>/vote", method="POST"> 
-                    <a href="javascript:{}" onclick="document.getElementById('vote_form').submit();" class="like"><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>
-                  </form>
+                <div>
+                    <div class="meta">
+                        <form style="margin: 0; padding: 0; display:inline;" id="vote_form" action="/posts/<%=post._id %>/vote" , method="POST">
+                            <a href="javascript:{}" onclick="document.getElementById('vote_form').submit();" class="like"><i class="chevron circle up icon"></i> <%=post.meta.votes %> Votes</a>
+                        </form>
+                    </div>
                 </div>
-              </div>
-            <% }else{ %>
-              <a><i class="chevron circle up icon"></i> <%=post.votes.length %> Votes</a>  
-            <% } %>
-            
-            <br>
-            <%if(currentUser && currentUser._id.equals(post.author.id._id)){ %>
-              <div class="ui two column grid">
-                <div class="column">
-                  <a href="/posts/<%=post._id %>/edit" class="fluid ui inverted yellow button" >Edit</a>
-                </div>
-                <div class="column">
-                  <form action="/posts/<%=post._id %>?_method=DELETE", method="POST" class="delete"> 
-                    <button class="fluid ui inverted red button" type="submit">Delete</button>
-                  </form>
-                </div>
-              </div>
-            <% } %>
-            
-            <!--comments section-->
-            <div class="ui comments">
-              <h3 class="ui dividing header">Comments</h3>
-              
-              <% post.comments.forEach(function(comment){ %>
-                <div class="comment">
-                  <a class="avatar">
+                <% }else{ %>
+                    <a><i class="chevron circle up icon"></i> <%=post.votes.length %> Votes</a>
+                    <% } %>
+
+                        <br>
+                        <%if(currentUser && currentUser._id.equals(post.author.id._id)){ %>
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <a href="/posts/<%=post._id %>/edit" class="fluid ui inverted yellow button">Edit</a>
+                                </div>
+                                <div class="column">
+                                    <form action="/posts/<%=post._id %>?_method=DELETE" , method="POST" class="delete">
+                                        <button class="fluid ui inverted red button" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <% } %>
+
+                                <!--comments section-->
+                                <div class="ui comments">
+                                    <h3 class="ui dividing header">Comments</h3>
+
+                                    <% post.comments.forEach(function(comment){ %>
+                                        <div class="comment">
+                                            <a class="avatar">
                     <img src="<%= comment.author.id.avatar %>">
                   </a>
-                  <div class="content">
-                    <a class="author"> <%= comment.author.username %></a>
-                    <div class="text">
-                      <%= comment.text %>
-                    </div>
-                    <%if(currentUser && currentUser._id.equals(comment.author.id._id)){ %>
-                      <div class="action">
-                        <div class="ui two column grid">
-                          <div class="column">
-                            <a href="/posts/<%=post._id %>/comments/<%=comment._id%>/edit" class = "fluid ui tiny yellow button">Edit </a>
-                          </div>
-                          <div class="column">
-                            <form action="/posts/<%=post._id %>/comments/<%=comment._id%>?_method=DELETE", method="POST" class="delete"> 
-                              <button class="fluid ui tiny red button" type="submit">Delete</button>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    <% } %>
-                  </div>
-                </div>
-              <% }); %>
-              
-                <!--Add comment button-->
-                <div>
-                    <a href="/posts/<%= post._id%>/comments/new" class="ui blue labeled submit icon button"><i class="icon edit"></i> Add Comment</a>
-                </div>
-              
-            </div>
-        </div>
-    </div> <!--container end-->
+                                            <div class="content">
+                                                <a class="author">
+                                                    <%= comment.author.username %>
+                                                </a>
+                                                <div class="text">
+                                                    <%= comment.text %>
+                                                </div>
+                                                <%if(currentUser && currentUser._id.equals(comment.author.id._id)){ %>
+                                                    <div class="action">
+                                                        <div class="ui two column grid">
+                                                            <div class="column">
+                                                                <a href="/posts/<%=post._id %>/comments/<%=comment._id%>/edit" class="fluid ui tiny yellow button">Edit </a>
+                                                            </div>
+                                                            <div class="column">
+                                                                <form action="/posts/<%=post._id %>/comments/<%=comment._id%>?_method=DELETE" , method="POST" class="delete">
+                                                                    <button class="fluid ui tiny red button" type="submit">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } %>
+                                            </div>
+                                        </div>
+                                        <% }); %>
 
-<% include ../partials/footer %>
+                                            <!--Add comment button-->
+                                            <div>
+                                                <a href="/posts/<%= post._id%>/comments/new" class="ui blue labeled submit icon button"><i class="icon edit"></i> Add Comment</a>
+                                            </div>
+
+                                </div>
+        </div>
+    </div>
+    <!--container end-->
+
+    <% include ../partials/footer %>
