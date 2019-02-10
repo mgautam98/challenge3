@@ -13,7 +13,8 @@ var express                     = require('express'),
     middleware                  = require("./middleware");
 
 var postsRoute                  = require("./routes/posts"),
-    commentsRoute               = require("./routes/comments"); 
+    commentsRoute               = require("./routes/comments"), 
+    userRoute                   = require("./routes/users");
 
 //database
 mongoose.connect("mongodb://localhost/challenge3");
@@ -116,43 +117,7 @@ app.delete('/users/:id/friends/:friend_id', middleware.isLoggedIn, function(req,
   });
 });
 
-// ====================USER==================================
-app.get('/users/:id', function(req, res) {
-    User.findById(req.params.id).populate("posts").exec(function(err, foundUser){
-        if(err){
-            res.redirect("/");
-        } else{
-            res.render("users/index", {user:foundUser});
-        }
-    });
-});
-
-app.get('/users/:id/edit', middleware.isLoggedIn, function(req, res) {
-  User.findById(req.params.id, function(err, foundUser) {
-      if(err){
-        console.log(err);
-      } else {
-        res.render('users/edit', {user:foundUser});
-      }
-  });
-});
-
-
-app.put('/users/:id', middleware.isLoggedIn, function(req, res){
-  User.findById(req.params.id, function(err, foundUser) {
-    if(err){
-      console.log(err);
-    }else{
-      
-      // Changing username will result in loss
-      // of data (previous posts) and various problems
-      
-      foundUser.UpdateInfo(req.body.email, req.body.username, req.body.about, req.body.avatar);
-      res.redirect("/users/" + req.params.id);
-    }
-  });
-});
-
+app.use(userRoute);
 // ====================CHAT=============================
 
 app.get('/chat', middleware.isLoggedIn, function(req, res) {
