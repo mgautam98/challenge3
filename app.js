@@ -12,7 +12,8 @@ var express                     = require('express'),
     async                       = require('async'),
     middleware                  = require("./middleware");
 
-    
+var postsRoute                  = require("./routes/posts"),
+    commentsRoute               = require("./routes/comments"); 
 
 //database
 mongoose.connect("mongodb://localhost/challenge3");
@@ -51,102 +52,7 @@ passport.deserializeUser(User.deserializeUser());
 app.get('/', function(req, res) {
    res.redirect('/posts'); 
 });
-
-// ==================POSTS===============================
-app.get('/posts', function(req, res){
-  Post.find({}).populate("author.id").exec(function(err, posts){
-    if(err){
-      console.log(err);
-    }else{
-      res.render("posts/index", {posts:posts});
-    }
-  });
-});
-
-//this gets the form which creates new post
-app.get('/posts/new', middleware.isLoggedIn, function(req, res){
-  res.render("posts/new");
-});
-
-//new post logic
-app.post('/posts', middleware.isLoggedIn, function(req, res){
-  var title = req.body.title;
-  var body = req.body.body;
-  var meta = {
-    votes: 0,
-    favs: 0,
-  };
-    
-  var newPost = {
-    title : title,
-    body : body,
-    meta : meta,
-    hidden : false
-  };
-  
-  User.findById(req.user._id, function(err, foundUser) {
-    if(err){
-      console.log(err);
-    } else {
-      Post.create(newPost, function(err, newPost) {
-          if(err){
-            console.log(err);
-          } else {
-            newPost.author.id = req.user._id;
-            newPost.author.username = req.user.username;
-            newPost.save();
-            foundUser.posts.push(newPost);
-            foundUser.save();
-            res.redirect('/posts/' + newPost.id);
-          }
-      });
-    }
-  });
-});
-
-
-//show the posts
-app.get('/posts/:id', function(req, res) {
-    Post.findById(req.params.id).populate("comments").populate("author.id").exec(function(err, foundPost){
-        if(err){
-            res.redirect("/");
-        } else{
-            res.render("posts/show", {post:foundPost});
-        }
-    });
-});
-
-app.get('/posts/:id/edit', middleware.PostOwnership, function(req, res) {
-  Post.findById(req.params.id, function(err, foundPost){
-      if(err){
-          res.redirect("/");
-      } else{
-          res.render("posts/edit", {post:foundPost});
-      }
-  });
-});
-
-app.put('/posts/:id', function(req, res){
-  Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, UpdatedPost){
-    if(err){
-      res.redirect('/');
-    } else {
-      res.redirect('/posts/' + req.params.id);
-    }
-  });
-});
-
-app.delete('/posts/:id', middleware.PostOwnership, function(req, res){
-  Post.findByIdAndDelete(req.params.id, function(err){
-    if(err){
-      console.log(err);
-      res.redirect("/posts");
-    }else{
-      res.redirect("/posts");
-    }
-  });
-});
-
+app.use(postsRoute);
 // --------------------Likes----------------------
 app.post('/posts/:id/vote', middleware.isLoggedIn, function(req, res) {
    Post.findById(req.params.id, function(err, foundPost){
@@ -165,72 +71,7 @@ app.post('/posts/:id/vote', middleware.isLoggedIn, function(req, res) {
    });
 });
 
-
-// ====================COMMENTS==================================
-
-app.get('/posts/:id/comments/new', middleware.isLoggedIn, function(req, res) {
-  Post.findById(req.params.id, function(err, foundPost){
-    if(err){
-      res.redirect("/");
-    } else{
-      res.render("comments/new", {post:foundPost});
-    }
-  });
-});
-
-app.post("/posts/:id/comments", middleware.isLoggedIn, function(req, res) {
-    Post.findById(req.params.id, function(err, foundPost) {
-       if(err){
-         console.log(err);
-       } else {
-         Comment.create(req.body.comment, function(err, comment){
-           if(err){
-             console.log(err);
-           } else {
-             comment.author.id = req.user._id;
-             comment.author.username = req.user.username;
-             
-             comment.save();
-             foundPost.comments.push(comment);
-             foundPost.save();
-             res.redirect("/posts/" + foundPost._id);
-           }
-         });
-       }
-    });
-});
-
-
-app.get('/posts/:id/comments/:comment_id/edit', middleware.CommentOwnership, function(req, res) {
-  Comment.findById(req.params.comment_id, function(err, foundComment) {
-     if(err) {
-       console.log(err);
-     } else {
-       res.render('comments/edit', {post_id : req.params.id, comment:foundComment}); 
-     }
-  });
-});
-
-app.put('/posts/:id/comments/:comment_id', middleware.isLoggedIn, function(req, res){
-  Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, UpdatedComment){
-    if(err){
-      console.log(err);
-    } else {
-      res.redirect("/posts/" + req.params.id);
-    }
-  });
-});
-
-app.delete('/posts/:id/comments/:comment_id', middleware.CommentOwnership, function(req, res){
-  Comment.findByIdAndRemove(req.params.comment_id, function(err, foundComment){
-    if(err) {
-      console.log(err);
-    } else {
-      res.redirect("back");
-    }
-  });
-});
-
+app.use(commentsRoute);
 
 // ====================Friends==================================
 
