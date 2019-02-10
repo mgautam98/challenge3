@@ -40,13 +40,14 @@ router.post('/users/:id/friends', middleware.isLoggedIn, function(req, res) {
 
 //remove a friend
 router.delete('/users/:id/friends/:friend_id', middleware.isLoggedIn, function(req, res){
-  User.findByIdAndRemove(req.params.friend_id, function(err, foundFriend){
-    if(err) {
-      console.log(err);
-    } else {
-      res.redirect("back");
-    }
-  });
+  // User.findByIdAndRemove(req.params.friend_id, function(err, foundFriend){
+  //   if(err) {
+  //     console.log(err);
+  //   } else {
+  //     res.redirect("back");
+  //   }
+  // });
+  res.redirect("back");
 });
 
     
