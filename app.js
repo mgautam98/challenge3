@@ -12,9 +12,10 @@ var express                     = require('express'),
     async                       = require('async'),
     middleware                  = require("./middleware");
 
-var postsRoute                  = require("./routes/posts"),
-    commentsRoute               = require("./routes/comments"), 
-    userRoute                   = require("./routes/users");
+var postsRoutes                  = require("./routes/posts"),
+    commentsRoutes               = require("./routes/comments"), 
+    userRoutes                   = require("./routes/users"),
+    indexRoutes                  = require("./routes/index");
 
 //database
 mongoose.connect("mongodb://localhost/challenge3");
@@ -53,7 +54,7 @@ passport.deserializeUser(User.deserializeUser());
 app.get('/', function(req, res) {
    res.redirect('/posts'); 
 });
-app.use(postsRoute);
+app.use(postsRoutes);
 // --------------------Likes----------------------
 app.post('/posts/:id/vote', middleware.isLoggedIn, function(req, res) {
    Post.findById(req.params.id, function(err, foundPost){
@@ -72,7 +73,7 @@ app.post('/posts/:id/vote', middleware.isLoggedIn, function(req, res) {
    });
 });
 
-app.use(commentsRoute);
+app.use(commentsRoutes);
 
 // ====================Friends==================================
 
@@ -117,7 +118,7 @@ app.delete('/users/:id/friends/:friend_id', middleware.isLoggedIn, function(req,
   });
 });
 
-app.use(userRoute);
+app.use(userRoutes);
 // ====================CHAT=============================
 
 app.get('/chat', middleware.isLoggedIn, function(req, res) {
@@ -130,40 +131,7 @@ app.get('/chat', middleware.isLoggedIn, function(req, res) {
   });
 });
 
-
-
-// ====================AUTHENTICATION=============================
-app.get('/register', function(req, res){
-  res.render("register");
-});
-
-app.post('/register', function(req, res){
-  User.register(new User({username:req.body.username, email:req.body.email, avatar: req.body.avatar, about:"Just Joined."}), req.body.password, function(err, user){
-    if(err){
-      console.log(err);
-      return res.render('/register');
-    }
-    passport.authenticate("local")(req, res, function(){
-      res.redirect("/");
-    });
-  });
-});
-
-
-app.get('/login', function(req, res){
-  res.render("login");
-});
-
-app.post('/login', passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/login"
-}), function(req, res){
-});
-
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect("/");
-});
+app.use(indexRoutes);
 
 var server    = app.listen(process.env.PORT, process.env.IP, function(){
                   console.log("Server is running ");
