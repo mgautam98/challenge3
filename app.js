@@ -15,6 +15,7 @@ var express                     = require('express'),
 var postsRoutes                  = require("./routes/posts"),
     likesRoutes                  = require("./routes/likes"),
     commentsRoutes               = require("./routes/comments"), 
+    friendsRoutes                = require("./routes/friends"),
     userRoutes                   = require("./routes/users"),
     indexRoutes                  = require("./routes/index");
 
@@ -55,50 +56,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use(postsRoutes);
 app.use(likesRoutes);
 app.use(commentsRoutes);
-
-// ====================Friends==================================
-
-app.get('/users/:id/friends', middleware.isLoggedIn, function(req, res) {
-  User.findById(req.params.id).populate("friends").exec(function(err, foundUser){
-    if(err){
-      res.redirect("/");
-    } else{
-      res.render("friends/index", {user:foundUser});
-    }
-  });
-});
-
-app.post('/users/:id/friends', middleware.isLoggedIn, function(req, res) {
-  User.findById(req.params.id, function(err, foundUser1) {
-    if(err){
-      console.log(err);
-    } else {
-      User.findById(req.user._id, function(err, foundUser2) {
-        if(err){
-          console.log(err);
-        } else {
-          foundUser1.friends.push(foundUser2);
-          foundUser2.friends.push(foundUser1);
-          foundUser1.save();
-          foundUser2.save();
-          res.redirect("back");
-        }
-      });
-    }
-  });
-});
-
-//delete a friend
-app.delete('/users/:id/friends/:friend_id', middleware.isLoggedIn, function(req, res){
-  User.findByIdAndRemove(req.params.friend_id, function(err, foundFriend){
-    if(err) {
-      console.log(err);
-    } else {
-      res.redirect("back");
-    }
-  });
-});
-
+app.use(friendsRoutes);
 app.use(userRoutes);
 // ====================CHAT=============================
 
