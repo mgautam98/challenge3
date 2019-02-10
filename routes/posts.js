@@ -60,7 +60,7 @@ router.post('/posts', middleware.isLoggedIn, function(req, res){
 
 //show the posts
 router.get('/posts/:id', function(req, res) {
-    Post.findById(req.params.id).populate({
+    Post.findById(req.params.id).populate('author.id').populate({
       path:'comments',
       populate:{path:'author.id'}
     }).exec(function(err, foundPost){
