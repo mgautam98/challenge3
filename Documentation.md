@@ -20,9 +20,9 @@ Register page takes following information
 1. Username - should be unique
 2. Email ID
 3. Password
-4. Avatar image
+4. Avatar image  
 It stores the hashed password in the database. 
-For seturity we have used passport-local for handle authentication and cookie management.
+For security we have used passport-local for handle authentication and cookie management.
 
 ### Login
 You will be redirected to this page if you want to post/comment/like or make friend.
