@@ -87,13 +87,22 @@
                   <% }) %>
                 </div>
                 
-                <h3>Votes by
-                  <% if(currentUser && currentUser._id==user.id){ %>
-                     You
-                  <% } else { %>
-                    <%= user.username %>
-                  <% } %>
-                </h3>
+                <!--<h3>Votes by-->
+                <!--  <% if(currentUser && currentUser._id==user.id){ %>-->
+                <!--     You-->
+                <!--  <% } else { %>-->
+                <!--    <%= user.username %>-->
+                <!--  <% } %>-->
+                <!--</h3>-->
+                <!--<div class="ui list">-->
+                <!--  <p><%= user %></p>-->
+                <!--  <% user.posts.forEach(function(post){ %>-->
+                <!--    <div class="item">-->
+                <!--      <div class="header"><%=post.title %></div>-->
+                <!--      <a href="/posts/<%=post._id%>"><%= post.body.substring(0, 50) %>....</a>-->
+                <!--    </div>-->
+                <!--  <% }) %>-->
+                <!--</div>-->
                 
             </div>
         </div>

@@ -7,7 +7,7 @@ var express                     = require('express'),
     
     
 router.get('/users/:id', function(req, res) {
-    User.findById(req.params.id).populate("posts").exec(function(err, foundUser){
+    User.findById(req.params.id).populate("posts votes").exec(function(err, foundUser){
         if(err){
             res.redirect("/");
         } else{
