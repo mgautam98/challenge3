@@ -23,7 +23,7 @@ var postsRoutes                  = require("./routes/posts"),
 //database
 
 // mongoose.connect("mongodb://localhost/challenge3");
-mongoose.connect("mongodb://user:challenge3@ds155150.mlab.com:55150/challenge3");
+mongoose.connect("mongodb://user:challenge3@ds113580.mlab.com:13580/challenge3");
 
 
 var app = express();
